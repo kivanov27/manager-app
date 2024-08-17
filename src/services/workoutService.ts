@@ -10,7 +10,13 @@ const addWorkout = () => {
     return null;
 };
 
+const findById = (id: number): WorkoutEntry | undefined => {
+    const workout = workouts.find(wo => wo.id === id);
+    return workout;
+};
+
 export default {
     getEntries,
-    addWorkout
+    addWorkout,
+    findById
 };
