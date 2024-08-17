@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import express from 'express';
 import workoutService from '../services/workoutService';
 
@@ -7,8 +8,14 @@ router.get('/', (_req, res) => {
     res.send(workoutService.getEntries());
 });
 
-router.post('/', (_req, res) => {
-    res.send('Saving a workout');
+router.post('/', (req, res) => {
+    const { title, date, exercises } = req.body;
+    const addedWorkout = workoutService.addWorkout({
+        title,
+        date,
+        exercises,
+    });
+    res.json(addedWorkout);
 });
 
 router.get('/:id', (req, res) => {

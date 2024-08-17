@@ -16,3 +16,5 @@ export interface WorkoutEntry {
     date?: string;
     exercises: ExerciseEntry[];
 }
+
+export type NewWorkoutEntry = Omit<WorkoutEntry, 'id'>;

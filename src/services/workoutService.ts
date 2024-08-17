@@ -1,13 +1,19 @@
 import workouts from '../../data/workouts';
 
-import { WorkoutEntry } from '../types';
+import { WorkoutEntry, NewWorkoutEntry } from '../types';
 
 const getEntries = (): WorkoutEntry[] => {
     return workouts;
 };
 
-const addWorkout = () => {
-    return null;
+const addWorkout = (workout: NewWorkoutEntry): WorkoutEntry => {
+    const newWorkout = {
+        id: Math.max(...workouts.map(w => w.id)) + 1,
+        ...workout
+    };
+
+    workouts.push(newWorkout);
+    return newWorkout;
 };
 
 const findById = (id: number): WorkoutEntry | undefined => {
