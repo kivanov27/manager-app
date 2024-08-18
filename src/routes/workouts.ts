@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import express from 'express';
 import workoutService from '../services/workoutService';
+import toNewWorkout from '../utils';
 
 const router = express.Router();
 
@@ -9,13 +9,18 @@ router.get('/', (_req, res) => {
 });
 
 router.post('/', (req, res) => {
-    const { title, date, exercises } = req.body;
-    const addedWorkout = workoutService.addWorkout({
-        title,
-        date,
-        exercises,
-    });
-    res.json(addedWorkout);
+    try {
+        const newWorkout = toNewWorkout(req.body);
+        const addedWorkout = workoutService.addWorkout(newWorkout);
+        res.json(addedWorkout);
+    }
+    catch (error: unknown) {
+        let errorMsg = 'Something went wrong.';
+        if (error instanceof Error) {
+            errorMsg += 'Error: ' + error.message;
+        }
+        res.status(400).send(errorMsg);
+    }
 });
 
 router.get('/:id', (req, res) => {

@@ -1,5 +1,3 @@
-export type Weather = 'sunny' | 'rainy' | 'cloudy' | 'windy' | 'stormy';
-
 export interface ExerciseEntry {
     id: number;
     name: string;
@@ -18,3 +16,9 @@ export interface WorkoutEntry {
 }
 
 export type NewWorkoutEntry = Omit<WorkoutEntry, 'id'>;
+
+export enum Example {
+    option1 = 'asdasd',
+    option2 = 'asnsrngsrg',
+    option3 = 'aiusfbj',
+}
