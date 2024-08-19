@@ -9,7 +9,7 @@ const toNewWorkoutEntry = (obj: unknown): NewWorkoutEntry => {
         const newWorkout: NewWorkoutEntry = {
             title: parseTitle(obj.title),
             date: parseDate(obj.date),
-            exercises: [],
+            exercises: parseExercises(obj.exercises),
         };
 
         return newWorkout;
@@ -68,6 +68,16 @@ const parseExerciseEntry = (exercise: unknown): ExerciseEntry => {
         description: parsedExercise.description && isString(parsedExercise.description) ? parsedExercise.description : undefined,
         weight: parsedExercise.weight && isString(parsedExercise.weight) ? parsedExercise.weight : undefined,
     };
+
+    return exerciseEntry;
+};
+
+const parseExercises = (exercises: unknown): ExerciseEntry[] => {
+    if (!Array.isArray(exercises)) {
+        throw new Error('Incorrect or missing exercises');
+    }
+
+    return exercises.map(exercise => parseExerciseEntry(exercise));
 };
 
 export default toNewWorkoutEntry;
