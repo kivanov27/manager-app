@@ -8,6 +8,8 @@ export interface ExerciseEntry {
     weight?: string;
 }
 
+export type NewExerciseEntry = Omit<ExerciseEntry, 'id'>;
+
 export interface WorkoutEntry {
     id: number;
     title: string;

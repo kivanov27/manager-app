@@ -1,4 +1,4 @@
-import { ExerciseEntry, NewWorkoutEntry } from './types';
+import { ExerciseEntry, NewExerciseEntry, NewWorkoutEntry } from './types';
 
 const toNewWorkoutEntry = (obj: unknown): NewWorkoutEntry => {
     if (!obj || typeof obj !== 'object') {
@@ -18,6 +18,22 @@ const toNewWorkoutEntry = (obj: unknown): NewWorkoutEntry => {
     throw new Error('Incorrect data: some fields are missing.');
 };
 
+const toNewExerciseEntry = (obj: unknown): NewExerciseEntry => {
+    if (!obj || typeof obj !== 'object') {
+        throw new Error('Incorrect or missing data');
+    }
+
+    if ('name' in obj) {
+        const newExercise: NewExerciseEntry = {
+            name: parseName(obj.name)
+        };
+
+        return newExercise;
+    }
+
+    throw new Error('Incorrect data: you need a name at least.');
+};
+
 const isString = (text: unknown): text is string => {
     return typeof text === 'string' || text instanceof String;
 };
@@ -28,6 +44,13 @@ const isNumber = (num: unknown): num is number => {
 
 const isDate = (date: string): boolean => {
     return Boolean(Date.parse(date));
+};
+
+const parseName = (name: unknown): string => {
+    if (!name || !isString(name)) {
+        throw new Error('Incorrect or missing name:' + name);
+    }
+    return name;
 };
 
 const parseTitle = (title: unknown): string => {
@@ -80,4 +103,4 @@ const parseExercises = (exercises: unknown): ExerciseEntry[] => {
     return exercises.map(exercise => parseExerciseEntry(exercise));
 };
 
-export default toNewWorkoutEntry;
+export { toNewWorkoutEntry, toNewExerciseEntry };
