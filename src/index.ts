@@ -1,9 +1,11 @@
 import express from 'express';
-import workoutRouter from './routes/workouts';
 const app = express();
-app.use(express.json());
+import {PORT, URL} from './utils/config';
+import mongoose from 'mongoose';
 
-const PORT = 3001;
+import workoutRouter from './routes/workouts';
+
+app.use(express.json());
 
 app.get('/ping', (_req, res) => {
     console.log("someone pinged here.");
