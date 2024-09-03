@@ -25,8 +25,21 @@ const toNewExerciseEntry = (obj: unknown): NewExerciseEntry => {
 
     if ('name' in obj) {
         const newExercise: NewExerciseEntry = {
-            name: parseName(obj.name)
+            name: parseName(obj.name),
         };
+
+        if ('reps' in obj) {
+            newExercise.reps = parseReps(obj.reps);
+        }
+        if ('sets' in obj) {
+            newExercise.sets = parseSets(obj.sets);
+        }
+        if ('duration' in obj) {
+            newExercise.duration = parseDuration(obj.duration);
+        }
+        if ('weight' in obj) {
+            newExercise.weight = parseWeight(obj.weight);
+        }
 
         return newExercise;
     }
@@ -51,6 +64,34 @@ const parseName = (name: unknown): string => {
         throw new Error('Incorrect or missing name:' + name);
     }
     return name;
+};
+
+const parseReps = (reps: unknown): number => {
+    if (!isNumber(reps)) {
+        throw new Error('Incorrect value for reps, must be number:' + reps);
+    }
+    return reps;
+};
+
+const parseSets = (sets: unknown): number => {
+    if (!isNumber(sets)) {
+        throw new Error('Incorrect value for sets, must be number:' + sets);
+    }
+    return sets;
+};
+
+const parseDuration = (duration: unknown): string => {
+    if (!isString(duration)) {
+        throw new Error('Incorrect value for duration:' + duration);
+    }
+    return duration;
+};
+
+const parseWeight = (weight: unknown): string => {
+    if (!isString(weight)) {
+        throw new Error('Incorrect value for weight:' + weight);
+    }
+    return weight;
 };
 
 const parseTitle = (title: unknown): string => {

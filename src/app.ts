@@ -5,12 +5,11 @@ import mongoose from 'mongoose';
 
 import { URL } from './utils/config';
 import exerciseRouter from './routes/exercises';
-import middleware from './utils/middleware';
+import * as middleware from './utils/middleware';
 
 mongoose.set('strictQuery', false);
 
 if (URL) {
-    console.log(`Connecting to ${URL}`);
     mongoose.connect(URL)
         .then(() => {
             console.log('Connected to MongoDB');

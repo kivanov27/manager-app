@@ -1,28 +1,32 @@
-import exercises from '../../data/exercises';
+import { Exercise } from '../models/exercise';
 
 import { ExerciseEntry, NewExerciseEntry } from '../types';
 
-const getEntries = (): ExerciseEntry[] => {
-    return exercises;
+const getEntries = async (): Promise<ExerciseEntry[]> => {
+    //return exercises;
+    return await Exercise.find({});
 };
 
-const addExercise = (exercise: NewExerciseEntry): ExerciseEntry => {
-    const newExercise = {
-        id: Math.max(...exercises.map(e => e.id)) + 1,
-        ...exercise
-    };
+const addExercise = async (newExercise: NewExerciseEntry): Promise<ExerciseEntry> => {
+    const exercise = new Exercise({
+        name: newExercise.name,
+        reps: newExercise.reps,
+        sets: newExercise.sets,
+        duration: newExercise.duration,
+        weight: newExercise.weight,
+    }); 
 
-    exercises.push(newExercise);
-    return newExercise;
+    const savedExercise = await exercise.save();
+    return savedExercise.toJSON() as ExerciseEntry;
 };
 
-const findById = (id: number): ExerciseEntry | undefined => {
-    const exercise = exercises.find(e => e.id === id);
-    return exercise;
-};
+//const findById = (id: number): ExerciseEntry | undefined => {
+//    const exercise = exercises.find(e => e.id === id);
+//    return exercise;
+//};
 
 export default {
     getEntries,
     addExercise,
-    findById
+    //findById
 };
