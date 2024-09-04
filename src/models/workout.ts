@@ -1,10 +1,11 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import { NewExerciseEntry } from '../types';
+import { ExerciseEntry } from '../types';
+import { exerciseSchema } from './exercise';
 
 interface IWorkout extends Document {
     title: string;
     day: string;
-    exercises: NewExerciseEntry[];
+    exercises: ExerciseEntry[];
 }
 
 const workoutSchema = new Schema<IWorkout>({
@@ -16,15 +17,9 @@ const workoutSchema = new Schema<IWorkout>({
         type: String,
         required: true
     },
-    exercises: [
-        {
-            name: String,
-            sets: Number,
-            reps: Number,
-            duration: String,
-            weight: String
-        }
-    ]
+    exercises: {
+        type: [exerciseSchema]
+    }
 });
 
 workoutSchema.set('toJSON', {
@@ -38,4 +33,3 @@ workoutSchema.set('toJSON', {
 });
 
 export const Workout = mongoose.model<IWorkout>('Workout', workoutSchema);
-

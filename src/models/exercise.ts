@@ -2,19 +2,19 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 interface IExercise extends Document {
     name: string;
-    sets?: number;
-    reps?: number;
+    sets?: string;
+    reps?: string;
     duration?: string;
     weight?: string;
 }
 
-const exerciseSchema = new Schema<IExercise>({
+export const exerciseSchema = new Schema<IExercise>({
     name: {
         type: String,
         required: true
     },
-    sets: Number,
-    reps: Number,
+    sets: String,
+    reps: String,
     duration: String,
     weight: String
 });

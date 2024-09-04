@@ -1,4 +1,4 @@
-import { NewExerciseEntry, NewWorkoutEntry } from './types';
+import { ExerciseEntry, NewWorkoutEntry, Days } from './types';
 
 const toNewWorkoutEntry = (obj: unknown): NewWorkoutEntry => {
     if (!obj || typeof obj !== 'object') {
@@ -9,7 +9,6 @@ const toNewWorkoutEntry = (obj: unknown): NewWorkoutEntry => {
         const newWorkout: NewWorkoutEntry = {
             title: parseTitle(obj.title),
             day: parseDay(obj.day),
-            //date: parseDate(obj.date),
             exercises: parseExercises(obj.exercises),
         };
 
@@ -19,13 +18,13 @@ const toNewWorkoutEntry = (obj: unknown): NewWorkoutEntry => {
     throw new Error('Incorrect data: some fields are missing.');
 };
 
-const toNewExerciseEntry = (obj: unknown): NewExerciseEntry => {
+const toNewExerciseEntry = (obj: unknown): ExerciseEntry => {
     if (!obj || typeof obj !== 'object') {
         throw new Error('Incorrect or missing data');
     }
 
     if ('name' in obj) {
-        const newExercise: NewExerciseEntry = {
+        const newExercise: ExerciseEntry = {
             name: parseName(obj.name),
         };
 
@@ -52,13 +51,10 @@ const isString = (text: unknown): text is string => {
     return typeof text === 'string' || text instanceof String;
 };
 
-const isNumber = (num: unknown): num is number => {
-    return typeof num === 'number' && !isNaN(num);
-};
 
-//const isDate = (date: string): boolean => {
-//    return Boolean(Date.parse(date));
-//};
+const isDay = (day: string): day is Days => {
+    return Object.values(Days).includes(day as Days);
+};
 
 const parseTitle = (title: unknown): string => {
     if (!isString(title)) {
@@ -67,40 +63,29 @@ const parseTitle = (title: unknown): string => {
     return title;
 };
 
-const parseDay = (day: unknown): string => {
-    if(!isString(day)) {
+const parseDay = (day: unknown): Days => {
+    if(!isString(day) || !isDay(day)) {
         throw new Error('Incorrect value for day:' + day);
     }
     return day;
 };
 
-//const parseDate = (date: unknown): string => {
-//    if (!date || !isString(date) || !isDate(date)) {
-//        throw new Error('Incorrect or missing date:' + date);
-//    }
-//    return date;
-//};
 
-const parseExerciseEntry = (exercise: unknown): NewExerciseEntry => {
+const parseExerciseEntry = (exercise: unknown): ExerciseEntry => {
     if (!exercise || typeof exercise !== 'object') {
         throw new Error('Incorrect or missing exercise data.');
     }
 
     const parsedExercise = exercise as { [key: string]: unknown };
 
-    //if (!parsedExercise.id || !isNumber(parsedExercise.id)) {
-    //    throw new Error('Incorrect or missing exercise id: ' + parsedExercise.id);
-    //}
-
     if (!parsedExercise.name || !isString(parsedExercise.name)) {
         throw new Error('Incorrect or missing exercise name: ' + parsedExercise.name);
     }
 
-    const exerciseEntry: NewExerciseEntry = {
-        //id: parsedExercise.id,
+    const exerciseEntry: ExerciseEntry = {
         name: parsedExercise.name,
-        sets: parsedExercise.sets && isNumber(parsedExercise.sets) ? parsedExercise.sets : undefined,
-        reps: parsedExercise.reps && isNumber(parsedExercise.reps) ? parsedExercise.reps : undefined,
+        sets: parsedExercise.sets && isString(parsedExercise.sets) ? parsedExercise.sets : undefined,
+        reps: parsedExercise.reps && isString(parsedExercise.reps) ? parsedExercise.reps : undefined,
         duration: parsedExercise.duration && isString(parsedExercise.duration) ? parsedExercise.duration : undefined,
         description: parsedExercise.description && isString(parsedExercise.description) ? parsedExercise.description : undefined,
         weight: parsedExercise.weight && isString(parsedExercise.weight) ? parsedExercise.weight : undefined,
@@ -109,7 +94,7 @@ const parseExerciseEntry = (exercise: unknown): NewExerciseEntry => {
     return exerciseEntry;
 };
 
-const parseExercises = (exercises: unknown): NewExerciseEntry[] => {
+const parseExercises = (exercises: unknown): ExerciseEntry[] => {
     if (!Array.isArray(exercises)) {
         throw new Error('Incorrect or missing exercises');
     }
@@ -124,15 +109,15 @@ const parseName = (name: unknown): string => {
     return name;
 };
 
-const parseReps = (reps: unknown): number => {
-    if (!isNumber(reps)) {
+const parseReps = (reps: unknown): string => {
+    if (!isString(reps)) {
         throw new Error('Incorrect value for reps, must be number:' + reps);
     }
     return reps;
 };
 
-const parseSets = (sets: unknown): number => {
-    if (!isNumber(sets)) {
+const parseSets = (sets: unknown): string => {
+    if (!isString(sets)) {
         throw new Error('Incorrect value for sets, must be number:' + sets);
     }
     return sets;
@@ -151,5 +136,20 @@ const parseWeight = (weight: unknown): string => {
     }
     return weight;
 };
+
+//const isNumber = (num: unknown): num is number => {
+//    return typeof num === 'number' && !isNaN(num);
+//};
+
+//const isDate = (date: string): boolean => {
+//    return Boolean(Date.parse(date));
+//};
+
+//const parseDate = (date: unknown): string => {
+//    if (!date || !isString(date) || !isDate(date)) {
+//        throw new Error('Incorrect or missing date:' + date);
+//    }
+//    return date;
+//};
 
 export { toNewWorkoutEntry, toNewExerciseEntry };
