@@ -1,29 +1,21 @@
 import express from 'express';
+import expressAsyncHandler from 'express-async-handler';
 import workoutService from '../services/workoutService';
-import toNewWorkout from '../utils';
+import { toNewWorkoutEntry } from '../utils';
 
-const router = express.Router();
+const workoutRouter = express.Router();
 
-router.get('/', (_req, res) => {
+workoutRouter.get('/', (_req, res) => {
     res.send(workoutService.getEntries());
 });
 
-router.post('/', (req, res) => {
-    try {
-        const newWorkout = toNewWorkout(req.body);
-        const addedWorkout = workoutService.addWorkout(newWorkout);
-        res.json(addedWorkout);
-    }
-    catch (error: unknown) {
-        let errorMsg = 'Something went wrong.';
-        if (error instanceof Error) {
-            errorMsg += 'Error: ' + error.message;
-        }
-        res.status(400).send(errorMsg);
-    }
-});
+workoutRouter.post('/', expressAsyncHandler(async (req, res) => {
+    const newWorkout = toNewWorkoutEntry(req.body);
+    const addedWorkout = await workoutService.addWorkout(newWorkout);
+    res.json(addedWorkout);
+}));
 
-router.get('/:id', (req, res) => {
+/* workoutRouter.get('/:id', (req, res) => {
     const workout = workoutService.findById(Number(req.params.id));
 
     if (workout) {
@@ -31,6 +23,6 @@ router.get('/:id', (req, res) => {
     } else {
         res.sendStatus(404);
     }
-});
+}); */
 
-export default router;
+export default workoutRouter;

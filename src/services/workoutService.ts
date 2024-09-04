@@ -1,28 +1,28 @@
-import workouts from '../../data/workouts';
-
 import { WorkoutEntry, NewWorkoutEntry } from '../types';
+import { Workout } from '../models/workout';
 
-const getEntries = (): WorkoutEntry[] => {
-    return workouts;
+const getEntries = async (): Promise<WorkoutEntry[]> => {
+    return await Workout.find({});
 };
 
-const addWorkout = (workout: NewWorkoutEntry): WorkoutEntry => {
-    const newWorkout = {
-        id: Math.max(...workouts.map(w => w.id)) + 1,
-        ...workout
-    };
+const addWorkout = async (newWorkout: NewWorkoutEntry): Promise<WorkoutEntry> => {
+    const workout = new Workout({
+        title: newWorkout.title,
+        day: newWorkout.day,
+        exercises: newWorkout.exercises
+    });
 
-    workouts.push(newWorkout);
-    return newWorkout;
-};
+    const savedWorkout = await workout.save();
+    return savedWorkout.toJSON() as WorkoutEntry;
+}
 
-const findById = (id: number): WorkoutEntry | undefined => {
-    const workout = workouts.find(wo => wo.id === id);
-    return workout;
-};
+// const findById = (id: number): WorkoutEntry | undefined => {
+//    const workout = workouts.find(wo => wo.id === id);
+//    return workout;
+// };
 
 export default {
     getEntries,
     addWorkout,
-    findById
+//    findById
 };

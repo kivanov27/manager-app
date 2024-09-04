@@ -13,8 +13,8 @@ export type NewExerciseEntry = Omit<ExerciseEntry, 'id'>;
 export interface WorkoutEntry {
     id: number;
     title: string;
-    date?: string;
-    exercises: ExerciseEntry[];
+    day: string;
+    exercises: NewExerciseEntry[];
 }
 
 export type NewWorkoutEntry = Omit<WorkoutEntry, 'id'>;
