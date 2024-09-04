@@ -14,7 +14,7 @@ const addWorkout = async (newWorkout: NewWorkoutEntry): Promise<WorkoutEntry> =>
 
     const savedWorkout = await workout.save();
     return savedWorkout.toJSON() as WorkoutEntry;
-}
+};
 
 // const findById = (id: number): WorkoutEntry | undefined => {
 //    const workout = workouts.find(wo => wo.id === id);

@@ -4,7 +4,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 
 import { URL } from './utils/config';
-import exerciseRouter from './routes/exercises';
+import workoutRouter from './routes/workouts';
 import * as middleware from './utils/middleware';
 
 mongoose.set('strictQuery', false);
@@ -24,7 +24,7 @@ app.use(express.static('dist'));
 app.use(express.json());
 app.use(middleware.requestLogger);
 
-app.use('/api/exercises', exerciseRouter);
+app.use('/api/workouts', workoutRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
