@@ -5,9 +5,9 @@ import { toNewWorkoutEntry } from '../utils';
 
 const workoutRouter = express.Router();
 
-workoutRouter.get('/', (_req, res) => {
-    res.send(workoutService.getEntries());
-});
+workoutRouter.get('/', expressAsyncHandler(async (_req, res) => {
+    res.send(await workoutService.getEntries());
+}));
 
 workoutRouter.post('/', expressAsyncHandler(async (req, res) => {
     const newWorkout = toNewWorkoutEntry(req.body);
