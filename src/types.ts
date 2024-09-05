@@ -7,7 +7,15 @@ export interface ExerciseEntry {
     weight?: string;
 }
 
-//export type NewExerciseEntry = Omit<ExerciseEntry, 'id'>;
+export enum Days {
+    Monday = 'Monday',
+        Tuesday = 'Tuesday',
+        Wednesday = 'Wednesday',
+        Thursday = 'Thursday',
+        Friday = 'Friday',
+        Saturday = 'Saturday',
+        Sunday = 'Sunday'
+}
 
 export interface WorkoutEntry {
     id: number;
@@ -17,13 +25,3 @@ export interface WorkoutEntry {
 }
 
 export type NewWorkoutEntry = Omit<WorkoutEntry, 'id'>;
-
-export enum Days {
-    Monday = 'Monday',
-    Tuesday = 'Tuesday',
-    Wednesday = 'Wednesday',
-    Thursday = 'Thursday',
-    Friday = 'Friday',
-    Saturday = 'Saturday',
-    Sunday = 'Sunday'
-}
