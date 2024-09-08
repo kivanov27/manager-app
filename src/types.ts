@@ -25,3 +25,5 @@ export interface WorkoutEntry {
 }
 
 export type NewWorkoutEntry = Omit<WorkoutEntry, 'id'>;
+
+export type NewExerciseEntry = Omit<ExerciseEntry, 'id'>;
