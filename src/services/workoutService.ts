@@ -25,14 +25,24 @@ const addWorkout = async (newWorkout: WorkoutEntry): Promise<WorkoutEntry> => {
 };
 
 const addExercise = async (workoutId: string, exercise: ExerciseEntry): Promise<WorkoutEntry> => {
-    const updatedWorkout = await Workout.findById(workoutId);
-    if (!updatedWorkout) {
-        throw new Error(`Could find a workout with the id ${workoutId}`);
+    const workout = await Workout.findById(workoutId);
+    if (!workout) {
+        throw new Error(`Could not find a workout with the id ${workoutId}`);
     }
-    updatedWorkout.exercises.push(exercise);
-    const newWorkout = await Workout.findByIdAndUpdate(workoutId, updatedWorkout, { new: true });
-    return toWorkoutEntry(newWorkout);
+    workout.exercises.push(exercise);
+
+    const updatedWorkout = await Workout.findByIdAndUpdate(workoutId, workout, { new: true });
+    return toWorkoutEntry(updatedWorkout);
 };
+
+//const deleteExercise = async (workoutId: string, exerciseId: string): Promise<WorkoutEntry> => {
+//    const workout = await Workout.findById(workoutId);
+//    if (!workout) {
+//        throw new Error(`Could not find a workout with the id ${workoutId}`);
+//    }
+//    workout.exercises = workout.exercises.filter(ex: ExerciseEntry => {
+//    });
+//};
 
 export default {
     getEntries,
