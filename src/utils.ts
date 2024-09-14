@@ -1,31 +1,12 @@
-import { WorkoutEntry, ExerciseEntry, NewWorkoutEntry, Days } from './types';
+import { WorkoutEntry, ExerciseEntry, Days } from './types';
 
 const toWorkoutEntry = (obj: unknown): WorkoutEntry => {
     if (!obj || typeof obj !== 'object') {
         throw new Error('Incorrect or missing data');
     }
 
-    if ('_id' in obj && 'title' in obj && 'day' in obj && 'exercises' in obj) {
-        const workout: WorkoutEntry = {
-            id: parseId(obj._id),
-            title: parseTitle(obj.title),
-            day: parseDay(obj.day),
-            exercises: parseExercises(obj.exercises),
-        };
-
-        return workout;
-    }
-
-    throw new Error('Incorrect data: some fields are missing.');
-};
-
-const toNewWorkoutEntry = (obj: unknown): NewWorkoutEntry => {
-    if (!obj || typeof obj !== 'object') {
-        throw new Error('Incorrect or missing data');
-    }
-
     if ('title' in obj && 'day' in obj && 'exercises' in obj) {
-        const newWorkout: NewWorkoutEntry = {
+        const newWorkout: WorkoutEntry = {
             title: parseTitle(obj.title),
             day: parseDay(obj.day),
             exercises: parseExercises(obj.exercises),
@@ -73,13 +54,6 @@ const isString = (text: unknown): text is string => {
 
 const isDay = (day: string): day is Days => {
     return Object.values(Days).includes(day as Days);
-};
-
-const parseId = (id: unknown): number => {
-    if (!isString(id)) {
-        throw new Error('Incorrect or missing id:' + id);
-    }
-    return parseInt(id, 10);
 };
 
 const parseTitle = (title: unknown): string => {
@@ -162,19 +136,4 @@ const parseWeight = (weight: unknown): string => {
     return weight;
 };
 
-//const isNumber = (num: unknown): num is number => {
-//    return typeof num === 'number' && !isNaN(num);
-//};
-
-//const isDate = (date: string): boolean => {
-//    return Boolean(Date.parse(date));
-//};
-
-//const parseDate = (date: unknown): string => {
-//    if (!date || !isString(date) || !isDate(date)) {
-//        throw new Error('Incorrect or missing date:' + date);
-//    }
-//    return date;
-//};
-
-export { toWorkoutEntry, toNewWorkoutEntry, toNewExerciseEntry };
+export { toWorkoutEntry, toNewExerciseEntry };

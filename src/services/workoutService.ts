@@ -1,43 +1,37 @@
 import { Workout } from '../models/workout';
-import { WorkoutEntry, ExerciseEntry, NewWorkoutEntry } from '../types';
+import { WorkoutEntry, ExerciseEntry } from '../types';
 import { toWorkoutEntry } from '../utils';
 
 const getEntries = async (): Promise<WorkoutEntry[]> => {
     return await Workout.find({});
 };
 
-const findById = async (id: number): Promise<WorkoutEntry> => {
-    const workout = await Workout.find({ id: id });
-
+const findById = async (id: string): Promise<WorkoutEntry> => {
+    const workout = await Workout.findById(id);
     if (!workout) {
         throw new Error(`Could not find workout with id ${id}`);
     }
-
     return toWorkoutEntry(workout);
 };
 
-const addWorkout = async (newWorkout: NewWorkoutEntry): Promise<WorkoutEntry> => {
+const addWorkout = async (newWorkout: WorkoutEntry): Promise<WorkoutEntry> => {
     const workout = new Workout({
         title: newWorkout.title,
         day: newWorkout.day,
         exercises: newWorkout.exercises
     });
-
     const savedWorkout = await workout.save();
     return savedWorkout.toJSON() as WorkoutEntry;
 };
 
 const addExercise = async (workoutId: string, exercise: ExerciseEntry): Promise<WorkoutEntry> => {
-    const workout = await Workout.findById(workoutId);
-
-    if (!workout) {
-        throw new Error(`No workout found with the id ${workoutId}`);
+    const updatedWorkout = await Workout.findById(workoutId);
+    if (!updatedWorkout) {
+        throw new Error(`Could find a workout with the id ${workoutId}`);
     }
-
-    workout.exercises.push(exercise);
-    await workout.save();
-
-    return toWorkoutEntry(workout);
+    updatedWorkout.exercises.push(exercise);
+    const newWorkout = await Workout.findByIdAndUpdate(workoutId, updatedWorkout, { new: true });
+    return toWorkoutEntry(newWorkout);
 };
 
 export default {

@@ -1,11 +1,11 @@
 export enum Days {
     Monday = 'Monday',
-        Tuesday = 'Tuesday',
-        Wednesday = 'Wednesday',
-        Thursday = 'Thursday',
-        Friday = 'Friday',
-        Saturday = 'Saturday',
-        Sunday = 'Sunday'
+    Tuesday = 'Tuesday',
+    Wednesday = 'Wednesday',
+    Thursday = 'Thursday',
+    Friday = 'Friday',
+    Saturday = 'Saturday',
+    Sunday = 'Sunday'
 }
 
 export interface ExerciseEntry {
@@ -18,10 +18,9 @@ export interface ExerciseEntry {
 }
 
 export interface WorkoutEntry {
-    id: number;
     title: string;
     day: Days;
     exercises: ExerciseEntry[];
 }
 
-export type NewWorkoutEntry = Omit<WorkoutEntry, 'id'>;
+//export type NewWorkoutEntry = Omit<WorkoutEntry, 'id'>;
