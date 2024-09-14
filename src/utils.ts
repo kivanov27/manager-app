@@ -1,4 +1,23 @@
-import { ExerciseEntry, NewWorkoutEntry, Days } from './types';
+import { WorkoutEntry, ExerciseEntry, NewWorkoutEntry, Days } from './types';
+
+const toWorkoutEntry = (obj: unknown): WorkoutEntry => {
+    if (!obj || typeof obj !== 'object') {
+        throw new Error('Incorrect or missing data');
+    }
+
+    if ('_id' in obj && 'title' in obj && 'day' in obj && 'exercises' in obj) {
+        const workout: WorkoutEntry = {
+            id: parseId(obj._id),
+            title: parseTitle(obj.title),
+            day: parseDay(obj.day),
+            exercises: parseExercises(obj.exercises),
+        };
+
+        return workout;
+    }
+
+    throw new Error('Incorrect data: some fields are missing.');
+};
 
 const toNewWorkoutEntry = (obj: unknown): NewWorkoutEntry => {
     if (!obj || typeof obj !== 'object') {
@@ -56,6 +75,13 @@ const isDay = (day: string): day is Days => {
     return Object.values(Days).includes(day as Days);
 };
 
+const parseId = (id: unknown): number => {
+    if (!isString(id)) {
+        throw new Error('Incorrect or missing id:' + id);
+    }
+    return parseInt(id, 10);
+};
+
 const parseTitle = (title: unknown): string => {
     if (!isString(title)) {
         throw new Error('Incorrect or missing title:' + title);
@@ -69,7 +95,6 @@ const parseDay = (day: unknown): Days => {
     }
     return day;
 };
-
 
 const parseExerciseEntry = (exercise: unknown): ExerciseEntry => {
     if (!exercise || typeof exercise !== 'object') {
@@ -152,4 +177,4 @@ const parseWeight = (weight: unknown): string => {
 //    return date;
 //};
 
-export { toNewWorkoutEntry, toNewExerciseEntry };
+export { toWorkoutEntry, toNewWorkoutEntry, toNewExerciseEntry };

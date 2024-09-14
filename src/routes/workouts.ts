@@ -1,7 +1,7 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import workoutService from '../services/workoutService';
-import { toNewWorkoutEntry } from '../utils';
+import { toNewExerciseEntry, toNewWorkoutEntry } from '../utils';
 
 const workoutRouter = express.Router();
 
@@ -9,20 +9,20 @@ workoutRouter.get('/', expressAsyncHandler(async (_req, res) => {
     res.send(await workoutService.getEntries());
 }));
 
+workoutRouter.get('/:id', expressAsyncHandler(async(req, res) => {
+    res.send(await workoutService.findById(Number(req.params.id)));
+}));
+
 workoutRouter.post('/', expressAsyncHandler(async (req, res) => {
-    const newWorkout = toNewWorkoutEntry(req.body);
-    const addedWorkout = await workoutService.addWorkout(newWorkout);
+    const updatedWorkout = toNewWorkoutEntry(req.body);
+    const addedWorkout = await workoutService.addWorkout(updatedWorkout);
     res.json(addedWorkout);
 }));
 
-/* workoutRouter.get('/:id', (req, res) => {
-    const workout = workoutService.findById(Number(req.params.id));
-
-    if (workout) {
-        res.send(workout);
-    } else {
-        res.sendStatus(404);
-    }
-}); */
+workoutRouter.put('/:id', expressAsyncHandler(async (req, res) => {
+    const newExercise = toNewExerciseEntry(req.body);
+    const updatedWorkout = await workoutService.addExercise(req.params.id, newExercise);
+    res.json(updatedWorkout);
+}));
 
 export default workoutRouter;

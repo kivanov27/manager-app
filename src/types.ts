@@ -1,12 +1,3 @@
-export interface ExerciseEntry {
-    name: string;
-    sets?: string;
-    reps?: string;
-    duration?: string;
-    description?: string;
-    weight?: string;
-}
-
 export enum Days {
     Monday = 'Monday',
         Tuesday = 'Tuesday',
@@ -17,6 +8,15 @@ export enum Days {
         Sunday = 'Sunday'
 }
 
+export interface ExerciseEntry {
+    name: string;
+    sets?: string;
+    reps?: string;
+    duration?: string;
+    description?: string;
+    weight?: string;
+}
+
 export interface WorkoutEntry {
     id: number;
     title: string;
@@ -25,5 +25,3 @@ export interface WorkoutEntry {
 }
 
 export type NewWorkoutEntry = Omit<WorkoutEntry, 'id'>;
-
-export type NewExerciseEntry = Omit<ExerciseEntry, 'id'>;
