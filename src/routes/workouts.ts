@@ -19,10 +19,14 @@ workoutRouter.post('/', expressAsyncHandler(async (req, res) => {
     res.json(addedWorkout);
 }));
 
-workoutRouter.put('/:id', expressAsyncHandler(async (req, res) => {
+workoutRouter.post('/:id/exercises', expressAsyncHandler(async (req, res) => {
     const newExercise = toNewExerciseEntry(req.body);
     const updatedWorkout = await workoutService.addExercise(req.params.id, newExercise);
     res.json(updatedWorkout);
 }));
+
+// put
+
+// delete
 
 export default workoutRouter;
