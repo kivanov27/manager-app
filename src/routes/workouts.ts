@@ -26,8 +26,10 @@ workoutRouter.post('/:id/exercises', expressAsyncHandler(async (req, res) => {
 }));
 
 // put
+workoutRouter.put('/:id', expressAsyncHandler(async (req, res) => {
+    
+}));
 
-// delete
 workoutRouter.delete('/:id/exercises/:exerciseId', expressAsyncHandler(async (req, res) => {
     const updatedWorkout = await workoutService.deleteExercise(req.params.id, req.params.exerciseId);
     res.json(updatedWorkout);

@@ -35,6 +35,14 @@ const addExercise = async (workoutId: string, exercise: ExerciseEntry): Promise<
     return toWorkoutEntry(updatedWorkout);
 };
 
+const updateWorkout = async (workoutId: string, newWorkout: WorkoutEntry): Promise<WorkoutEntry> => {
+    const updatedWorkout = await Workout.findByIdAndUpdate(workoutId, newWorkout, { new: true });
+    if (!updatedWorkout) {
+        throw new Error(`Workout with id ${workoutId} could not be found and updated`);
+    }
+    return toWorkoutEntry(updatedWorkout);
+};
+
 const deleteExercise = async (workoutId: string, exerciseId: string): Promise<WorkoutEntry> => {
    const workout = await Workout.findById(workoutId);
    if (!workout) {
@@ -50,5 +58,6 @@ export default {
     findById,
     addWorkout,
     addExercise,
+    updateWorkout,
     deleteExercise
 };
