@@ -40,7 +40,7 @@ const deleteExercise = async (workoutId: string, exerciseId: string): Promise<Wo
    if (!workout) {
        throw new Error(`Could not find a workout with the id ${workoutId}`);
    }
-   workout.exercises = workout.exercises.filter(exercise => exercise._id.toString() !== exerciseId);
+   workout.exercises = workout.exercises.filter(exercise => exercise._id?.toString() !== exerciseId);
    const updatedWorkout = await workout.save();
    return toWorkoutEntry(updatedWorkout);
 };

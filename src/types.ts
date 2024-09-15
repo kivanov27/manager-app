@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 export enum Days {
     Monday = 'Monday',
     Tuesday = 'Tuesday',
@@ -9,6 +11,7 @@ export enum Days {
 }
 
 export interface ExerciseEntry {
+    _id?: Types.ObjectId;
     name: string;
     sets?: string;
     reps?: string;
