@@ -43,6 +43,10 @@ const updateWorkout = async (workoutId: string, newWorkout: WorkoutEntry): Promi
     return toWorkoutEntry(updatedWorkout);
 };
 
+const deleteWorkout = async (workoutId: string): Promise<void | null> => {
+    return await Workout.findByIdAndDelete(workoutId);
+};
+
 const deleteExercise = async (workoutId: string, exerciseId: string): Promise<WorkoutEntry> => {
    const workout = await Workout.findById(workoutId);
    if (!workout) {
@@ -59,5 +63,6 @@ export default {
     addWorkout,
     addExercise,
     updateWorkout,
+    deleteWorkout,
     deleteExercise
 };
