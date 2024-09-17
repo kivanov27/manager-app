@@ -26,8 +26,8 @@ workoutRouter.post('/:id/exercises', expressAsyncHandler(async (req, res) => {
 }));
 
 workoutRouter.put('/:id', expressAsyncHandler(async (req, res) => {
-    const newWorkout = req.body;
-    const updatedWorkout = workoutService.updateWorkout(req.params.id, newWorkout);    
+    const newWorkout = toWorkoutEntry(req.body);
+    const updatedWorkout = await workoutService.updateWorkout(req.params.id, newWorkout);    
     res.json(updatedWorkout);
 }));
 
