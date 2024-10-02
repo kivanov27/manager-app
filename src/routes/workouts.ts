@@ -1,7 +1,7 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import workoutService from '../services/workoutService';
-import { toNewExerciseEntry, toWorkoutEntry } from '../utils';
+import { toExerciseEntry, toWorkoutEntry } from '../utils';
 
 const workoutRouter = express.Router();
 
@@ -20,9 +20,8 @@ workoutRouter.post('/', expressAsyncHandler(async (req, res) => {
 }));
 
 workoutRouter.post('/:id/exercises', expressAsyncHandler(async (req, res) => {
-    const newExercise = toNewExerciseEntry(req.body);
-    const updatedWorkout = await workoutService.addExercise(req.params.id, newExercise);
-    res.json(updatedWorkout);
+    const newExercise = toExerciseEntry(req.body);
+    res.send(await workoutService.addExercise(req.params.id, newExercise));
 }));
 
 workoutRouter.put('/:id', expressAsyncHandler(async (req, res) => {

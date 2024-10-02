@@ -18,7 +18,7 @@ const toWorkoutEntry = (obj: unknown): WorkoutEntry => {
     throw new Error('Incorrect data: some fields are missing.');
 };
 
-const toNewExerciseEntry = (obj: unknown): ExerciseEntry => {
+const toExerciseEntry = (obj: unknown): ExerciseEntry => {
     if (!obj || typeof obj !== 'object') {
         throw new Error('Incorrect or missing data');
     }
@@ -136,4 +136,4 @@ const parseWeight = (weight: unknown): string => {
     return weight;
 };
 
-export { toWorkoutEntry, toNewExerciseEntry };
+export { toWorkoutEntry, toExerciseEntry };
