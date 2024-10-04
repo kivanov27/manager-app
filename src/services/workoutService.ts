@@ -49,6 +49,14 @@ const updateWorkout = async (workoutId: string, newWorkout: WorkoutEntry): Promi
     return updatedWorkout.toJSON() as WorkoutEntry;
 };
 
+const updateExercise = async (workoutId: string, exerciseId: string, newExercise: ExerciseEntry): Promise<ExerciseEntry> => {
+    const workout = await Workout.findById(workoutId);
+
+    if (!workout) {
+        throw new Error(`Workout with id ${workoutId} not found.`);
+    }
+};
+
 const deleteWorkout = async (workoutId: string): Promise<void | null> => {
     return await Workout.findByIdAndDelete(workoutId);
 };
