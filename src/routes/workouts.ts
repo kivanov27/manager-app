@@ -30,17 +30,19 @@ workoutRouter.put('/:id', expressAsyncHandler(async (req, res) => {
     res.json(updatedWorkout);
 }));
 
-workoutRouter.put('/:id/exercises/:exerciseId', expressAsyncHandler(async (_req, _res) => {
-    // write this function
+workoutRouter.put('/:id/exercises/:exerciseId', expressAsyncHandler(async (req, res) => {
+    const updatedExercise = toExerciseEntry(req.body);
+    const updatedWorkout = await workoutService.updateExercise(req.params.id, req.params.exerciseId, updatedExercise);
+    res.json(updatedWorkout);
 }));
 
 workoutRouter.delete('/:id', expressAsyncHandler(async (req, res) => {
     res.send(await workoutService.deleteWorkout(req.params.id));
 }));
 
-workoutRouter.delete('/:id/exercises/:exerciseId', expressAsyncHandler(async (req, res) => {
-    const updatedWorkout = await workoutService.deleteExercise(req.params.id, req.params.exerciseId);
-    res.json(updatedWorkout);
-}));
+//workoutRouter.delete('/:id/exercises/:exerciseId', expressAsyncHandler(async (req, res) => {
+//    const updatedWorkout = await workoutService.deleteExercise(req.params.id, req.params.exerciseId);
+//    res.json(updatedWorkout);
+//}));
 
 export default workoutRouter;

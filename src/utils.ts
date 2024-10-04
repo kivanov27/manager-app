@@ -1,12 +1,12 @@
-import { WorkoutEntry, ExerciseEntry, Days } from './types';
+import { NewWorkoutEntry, NewExerciseEntry, Days } from './types';
 
-const toWorkoutEntry = (obj: unknown): WorkoutEntry => {
+const toNewWorkoutEntry = (obj: unknown): NewWorkoutEntry => {
     if (!obj || typeof obj !== 'object') {
         throw new Error('Incorrect or missing data');
     }
 
     if ('title' in obj && 'day' in obj && 'exercises' in obj) {
-        const newWorkout: WorkoutEntry = {
+        const newWorkout: NewWorkoutEntry = {
             title: parseTitle(obj.title),
             day: parseDay(obj.day),
             exercises: parseExercises(obj.exercises),
@@ -18,13 +18,13 @@ const toWorkoutEntry = (obj: unknown): WorkoutEntry => {
     throw new Error('Incorrect data: some fields are missing.');
 };
 
-const toExerciseEntry = (obj: unknown): ExerciseEntry => {
+const toNewExerciseEntry = (obj: unknown): NewExerciseEntry => {
     if (!obj || typeof obj !== 'object') {
         throw new Error('Incorrect or missing data');
     }
 
     if ('name' in obj) {
-        const newExercise: ExerciseEntry = {
+        const newExercise: NewExerciseEntry = {
             name: parseName(obj.name),
         };
 
@@ -51,10 +51,16 @@ const isString = (text: unknown): text is string => {
     return typeof text === 'string' || text instanceof String;
 };
 
-
 const isDay = (day: string): day is Days => {
     return Object.values(Days).includes(day as Days);
 };
+
+//const parseId = (id: unknown): string => {
+//    if (!isString(id)) {
+//        throw new Error('Incorrect or missing id:' + id);
+//    }
+//    return id;
+//};
 
 const parseTitle = (title: unknown): string => {
     if (!isString(title)) {
@@ -70,7 +76,7 @@ const parseDay = (day: unknown): Days => {
     return day;
 };
 
-const parseExerciseEntry = (exercise: unknown): ExerciseEntry => {
+const parseExerciseEntry = (exercise: unknown): NewExerciseEntry => {
     if (!exercise || typeof exercise !== 'object') {
         throw new Error('Incorrect or missing exercise data.');
     }
@@ -81,7 +87,7 @@ const parseExerciseEntry = (exercise: unknown): ExerciseEntry => {
         throw new Error('Incorrect or missing exercise name: ' + parsedExercise.name);
     }
 
-    const exerciseEntry: ExerciseEntry = {
+    const exerciseEntry: NewExerciseEntry = {
         name: parsedExercise.name,
         sets: parsedExercise.sets && isString(parsedExercise.sets) ? parsedExercise.sets : undefined,
         reps: parsedExercise.reps && isString(parsedExercise.reps) ? parsedExercise.reps : undefined,
@@ -93,7 +99,7 @@ const parseExerciseEntry = (exercise: unknown): ExerciseEntry => {
     return exerciseEntry;
 };
 
-const parseExercises = (exercises: unknown): ExerciseEntry[] => {
+const parseExercises = (exercises: unknown): NewExerciseEntry[] => {
     if (!Array.isArray(exercises)) {
         throw new Error('Incorrect or missing exercises');
     }
@@ -136,4 +142,4 @@ const parseWeight = (weight: unknown): string => {
     return weight;
 };
 
-export { toWorkoutEntry, toExerciseEntry };
+export { toNewWorkoutEntry, toNewExerciseEntry };
