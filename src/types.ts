@@ -1,4 +1,4 @@
-// import { Types } from "mongoose";
+import { Types } from "mongoose";
 
 export enum Days {
     Monday = 'Monday',
@@ -25,7 +25,7 @@ export interface WorkoutEntry {
     id: string;
     title: string;
     day: Days;
-    exercises: NewExerciseEntry[];
+    exercises: (Types.ObjectId | ExerciseEntry)[];
 }
 
 export type NewExerciseEntry = Omit<ExerciseEntry, 'id'>;

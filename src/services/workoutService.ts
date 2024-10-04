@@ -1,5 +1,6 @@
+import { Exercise } from '../models/exercise';
 import { Workout } from '../models/workout';
-import { WorkoutEntry, ExerciseEntry, NewWorkoutEntry } from '../types';
+import { WorkoutEntry, ExerciseEntry, NewWorkoutEntry, NewExerciseEntry } from '../types';
 
 const getEntries = async (): Promise<WorkoutEntry[]> => {
     return await Workout.find({});
@@ -23,21 +24,28 @@ const addWorkout = async (newWorkout: NewWorkoutEntry): Promise<WorkoutEntry> =>
     return savedWorkout.toJSON() as WorkoutEntry;
 };
 
-const addExercise = async (workoutId: string, exercise: ExerciseEntry): Promise<WorkoutEntry> => {
+const addExercise = async (workoutId: string, newExercise: NewExerciseEntry): Promise<WorkoutEntry> => {
     const workout = await Workout.findById(workoutId);
     if (!workout) {
         throw new Error(`Could not find a workout with the id ${workoutId}`);
     }
-    workout.exercises.push(exercise);
 
-    const updatedWorkout = await Workout.findByIdAndUpdate(workoutId, workout, { new: true });
-    if (!updatedWorkout) {
-        throw new Error(`Could not update workout with the id ${workoutId}`);
-    }
-    return updatedWorkout.toJSON() as WorkoutEntry;
+    const exercise = new Exercise({
+        name: newExercise.name,
+        reps: newExercise.reps,
+        sets: newExercise.sets,
+        duration: newExercise.duration,
+        weight: newExercise.weight,
+    }); 
+    const savedExercise = await exercise.save();
+    workout.exercises.push(savedExercise._id);
+
+    const savedWorkout = await workout.save();
+    return savedWorkout.toJSON() as WorkoutEntry;
+
 };
 
-const updateWorkout = async (workoutId: string, newWorkout: WorkoutEntry): Promise<WorkoutEntry> => {
+const updateWorkout = async (workoutId: string, newWorkout: NewWorkoutEntry): Promise<WorkoutEntry> => {
     const updatedWorkout = await Workout.findByIdAndUpdate(workoutId, {
         title: newWorkout.title,
         day: newWorkout.day,
@@ -51,7 +59,7 @@ const updateWorkout = async (workoutId: string, newWorkout: WorkoutEntry): Promi
     return updatedWorkout.toJSON() as WorkoutEntry;
 };
 
-const updateExercise = async (workoutId: string, exerciseId: string, newExercise: ExerciseEntry): Promise<WorkoutEntry> => {
+const updateExercise = async (workoutId: string, exerciseId: string, newExercise: NewExerciseEntry): Promise<WorkoutEntry> => {
     const workout = await Workout.findById(workoutId);
     if (!workout) {
         throw new Error(`Workout with id ${workoutId} not found.`);
