@@ -87,15 +87,15 @@ const updateExerciseInWorkout = async (workoutId: string, exerciseId: string, ne
     }
 };
 
-//const removeExerciseFromWorkout = async (workoutId: string, exerciseId: string): Promise<WorkoutEntry> => {
-//   const workout = await Workout.findById(workoutId);
-//   if (!workout) {
-//       throw new Error(`Could not find a workout with the id ${workoutId}`);
-//   }
-//   workout.exercises = workout.exercises.filter(exercise => exercise._id?.toString() !== exerciseId);
-//   const updatedWorkout = await workout.save();
-//   return toNewWorkoutEntry(updatedWorkout);
-//};
+const removeExerciseFromWorkout = async (workoutId: string, exerciseId: string): Promise<WorkoutEntry> => {
+  const workout = await Workout.findById(workoutId);
+  if (!workout) {
+      throw new Error(`Could not find a workout with the id ${workoutId}`);
+  }
+  workout.exercises = workout.exercises.filter(exercise => exercise.id !== exerciseId);
+  const updatedWorkout = await workout.save();
+  return updatedWorkout.toJSON() as WorkoutEntry;
+};
 
 export default {
     getAllWorkouts,
@@ -105,5 +105,5 @@ export default {
     deleteWorkout,
     addExerciseToWorkout,
     updateExerciseInWorkout,
-    //removeExerciseFromWorkout
+    removeExerciseFromWorkout
 };

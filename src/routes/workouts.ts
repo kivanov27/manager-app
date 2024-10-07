@@ -46,9 +46,9 @@ workoutRouter.put('/:workoutId/exercises/:exerciseId', expressAsyncHandler(async
     res.json(updatedWorkout);
 }));
 
-//workoutRouter.delete('/:workoutId/exercises/:exerciseId', expressAsyncHandler(async (req, res) => {
-//    const updatedWorkout = await workoutService.removeExerciseFromWorkout(req.params.workoutId, req.params.exerciseId);
-//    res.json(updatedWorkout);
-//}));
+workoutRouter.delete('/:workoutId/exercises/:exerciseId', expressAsyncHandler(async (req, res) => {
+   await workoutService.removeExerciseFromWorkout(req.params.workoutId, req.params.exerciseId);
+   res.status(204).send();
+}));
 
 export default workoutRouter;
