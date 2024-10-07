@@ -1,12 +1,13 @@
+import mongoose from 'mongoose';
 import { Exercise } from '../models/exercise';
 import { Workout } from '../models/workout';
-import { WorkoutEntry, ExerciseEntry, NewWorkoutEntry, NewExerciseEntry } from '../types';
+import { Workout as WorkoutEntry, NewWorkout, NewExercise } from '../types';
 
-const getEntries = async (): Promise<WorkoutEntry[]> => {
+const getAllWorkouts = async (): Promise<WorkoutEntry[]> => {
     return await Workout.find({});
 };
 
-const findById = async (id: string): Promise<WorkoutEntry> => {
+const getWorkout = async (id: string): Promise<WorkoutEntry> => {
     const workout = await Workout.findById(id);
     if (!workout) {
         throw new Error(`Could not find workout with id ${id}`);
@@ -14,7 +15,7 @@ const findById = async (id: string): Promise<WorkoutEntry> => {
     return workout.toJSON() as WorkoutEntry;
 };
 
-const addWorkout = async (newWorkout: NewWorkoutEntry): Promise<WorkoutEntry> => {
+const createWorkout = async (newWorkout: NewWorkout): Promise<WorkoutEntry> => {
     const workout = new Workout({
         title: newWorkout.title,
         day: newWorkout.day,
@@ -24,28 +25,7 @@ const addWorkout = async (newWorkout: NewWorkoutEntry): Promise<WorkoutEntry> =>
     return savedWorkout.toJSON() as WorkoutEntry;
 };
 
-const addExercise = async (workoutId: string, newExercise: NewExerciseEntry): Promise<WorkoutEntry> => {
-    const workout = await Workout.findById(workoutId);
-    if (!workout) {
-        throw new Error(`Could not find a workout with the id ${workoutId}`);
-    }
-
-    const exercise = new Exercise({
-        name: newExercise.name,
-        reps: newExercise.reps,
-        sets: newExercise.sets,
-        duration: newExercise.duration,
-        weight: newExercise.weight,
-    }); 
-    const savedExercise = await exercise.save();
-    workout.exercises.push(savedExercise._id);
-
-    const savedWorkout = await workout.save();
-    return savedWorkout.toJSON() as WorkoutEntry;
-
-};
-
-const updateWorkout = async (workoutId: string, newWorkout: NewWorkoutEntry): Promise<WorkoutEntry> => {
+const updateWorkout = async (workoutId: string, newWorkout: NewWorkout): Promise<WorkoutEntry> => {
     const updatedWorkout = await Workout.findByIdAndUpdate(workoutId, {
         title: newWorkout.title,
         day: newWorkout.day,
@@ -59,28 +39,55 @@ const updateWorkout = async (workoutId: string, newWorkout: NewWorkoutEntry): Pr
     return updatedWorkout.toJSON() as WorkoutEntry;
 };
 
-const updateExercise = async (workoutId: string, exerciseId: string, newExercise: NewExerciseEntry): Promise<WorkoutEntry> => {
-    const workout = await Workout.findById(workoutId);
-    if (!workout) {
-        throw new Error(`Workout with id ${workoutId} not found.`);
-    }
-    
-    const updatedWorkout = await Workout.findByIdAndUpdate(workoutId, {
-        ...workout,
-        exercises: workout.exercises.filter(ex => ex.id === exerciseId ? newExercise : ex)
-    }); 
-    if (!updatedWorkout) {
-        throw new Error(`Couldn't update exercise with id ${exerciseId}`);
-    }
-
-    return updatedWorkout.toJSON() as WorkoutEntry;
-};
-
 const deleteWorkout = async (workoutId: string): Promise<void | null> => {
     return await Workout.findByIdAndDelete(workoutId);
 };
 
-//const deleteExercise = async (workoutId: string, exerciseId: string): Promise<WorkoutEntry> => {
+const addExerciseToWorkout = async (workoutId: string, newExercise: NewExercise): Promise<WorkoutEntry> => {
+    const workout = await Workout.findById(workoutId);
+    if (!workout) {
+        throw new Error(`Could not find a workout with the id ${workoutId}`);
+    }
+
+    const exercise = new Exercise(newExercise);
+
+    try {
+        const savedExercise = await exercise.save();
+        workout.exercises.push(savedExercise.toJSON());
+        const savedWorkout = await workout.save();
+        return savedWorkout.toJSON() as WorkoutEntry;
+    } catch (error) {
+        throw new Error(`Could not add exercise to workout with id ${workoutId}`);
+    }
+};
+
+const updateExerciseInWorkout = async (workoutId: string, exerciseId: string, newExercise: NewExercise): Promise<WorkoutEntry> => {
+    const workout = await Workout.findById(workoutId);
+    if (!workout) {
+        throw new Error(`Workout with id ${workoutId} not found.`);
+    }
+
+    const updatedExercises = workout.exercises.map(exercise =>
+        exercise.id === exerciseId ? { _id: new mongoose.Types.ObjectId(exerciseId), ...newExercise } : exercise
+    );
+
+    console.log('updated exercises:', updatedExercises);
+
+    try {
+        const updatedWorkout = await Workout.findByIdAndUpdate(
+            workoutId,
+            { $set: { exercises: updatedExercises } },
+            { new: true }
+        );
+        console.log('updated workout:', updatedWorkout);
+        return updatedWorkout?.toJSON() as WorkoutEntry;
+    }
+    catch (error) {
+        throw new Error(`Couldn't update exercise with id ${exerciseId}`);
+    }
+};
+
+//const removeExerciseFromWorkout = async (workoutId: string, exerciseId: string): Promise<WorkoutEntry> => {
 //   const workout = await Workout.findById(workoutId);
 //   if (!workout) {
 //       throw new Error(`Could not find a workout with the id ${workoutId}`);
@@ -91,12 +98,12 @@ const deleteWorkout = async (workoutId: string): Promise<void | null> => {
 //};
 
 export default {
-    getEntries,
-    findById,
-    addWorkout,
-    addExercise,
+    getAllWorkouts,
+    getWorkout,
+    createWorkout,
     updateWorkout,
-    updateExercise,
     deleteWorkout,
-    //deleteExercise
+    addExerciseToWorkout,
+    updateExerciseInWorkout,
+    //removeExerciseFromWorkout
 };

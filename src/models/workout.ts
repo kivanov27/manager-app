@@ -1,10 +1,11 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import { ExerciseEntry } from '../types';
+import { exerciseSchema } from './exercise';
+import { Exercise } from '../types';
 
 interface IWorkout extends Document {
     title: string;
     day: string;
-    exercises: ExerciseEntry[];
+    exercises: Exercise[];
 }
 
 const workoutSchema = new Schema<IWorkout>({
@@ -16,12 +17,7 @@ const workoutSchema = new Schema<IWorkout>({
         type: String,
         required: true
     },
-    exercises: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Exercise',
-        }
-    ],
+    exercises: [exerciseSchema],
 });
 
 workoutSchema.set('toJSON', {

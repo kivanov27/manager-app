@@ -1,5 +1,3 @@
-import { Types } from "mongoose";
-
 export enum Days {
     Monday = 'Monday',
     Tuesday = 'Tuesday',
@@ -10,8 +8,7 @@ export enum Days {
     Sunday = 'Sunday'
 }
 
-export interface ExerciseEntry {
-    // _id?: Types.ObjectId;
+export interface Exercise {
     id: string;
     name: string;
     sets?: string;
@@ -21,12 +18,18 @@ export interface ExerciseEntry {
     weight?: string;
 }
 
-export interface WorkoutEntry {
+export interface Workout {
     id: string;
     title: string;
     day: Days;
-    exercises: (Types.ObjectId | ExerciseEntry)[];
+    exercises: Exercise[];
 }
 
-export type NewExerciseEntry = Omit<ExerciseEntry, 'id'>;
-export type NewWorkoutEntry = Omit<WorkoutEntry, 'id'>;
+export type NewExercise = Omit<Exercise, 'id'>;
+// export type NewWorkout = Omit<Workout, 'id'>;
+
+export type NewWorkout = {
+    title: string;
+    day: Days;
+    exercises: NewExercise[];
+}
