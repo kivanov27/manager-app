@@ -71,15 +71,12 @@ const updateExerciseInWorkout = async (workoutId: string, exerciseId: string, ne
         exercise.id === exerciseId ? { _id: new mongoose.Types.ObjectId(exerciseId), ...newExercise } : exercise
     );
 
-    console.log('updated exercises:', updatedExercises);
-
     try {
         const updatedWorkout = await Workout.findByIdAndUpdate(
             workoutId,
             { $set: { exercises: updatedExercises } },
             { new: true }
         );
-        console.log('updated workout:', updatedWorkout);
         return updatedWorkout?.toJSON() as WorkoutEntry;
     }
     catch (error) {
