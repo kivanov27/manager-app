@@ -1,9 +1,11 @@
 import mongoose, { Document, Schema } from "mongoose";
 import { Exercise } from "../types";
 import { exerciseSchema } from "./exercise";
+
 interface IWorkoutRecord extends Document {
     title: string;
     day: string;
+    date: Date;
     exercises: Exercise[];
 }
 
@@ -15,6 +17,10 @@ const workoutRecordSchema = new Schema<IWorkoutRecord>({
     day: {
         type: String,
         required: true
+    },
+    date: {
+        type: Date,
+    required: true
     },
     exercises: [exerciseSchema]
 });

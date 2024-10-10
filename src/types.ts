@@ -18,6 +18,8 @@ export interface Exercise {
     weight?: string;
 }
 
+export type NewExercise = Omit<Exercise, 'id'>;
+
 export interface Workout {
     id: string;
     title: string;
@@ -25,11 +27,16 @@ export interface Workout {
     exercises: Exercise[];
 }
 
-export type NewExercise = Omit<Exercise, 'id'>;
-// export type NewWorkout = Omit<Workout, 'id'>;
-
 export type NewWorkout = {
     title: string;
     day: Days;
     exercises: NewExercise[];
+}
+
+export interface WorkoutRecord extends Workout {
+    date: Date;
+}
+
+export interface NewWorkoutRecord extends NewWorkout {
+    date: Date;
 }

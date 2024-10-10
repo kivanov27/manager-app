@@ -1,11 +1,11 @@
 import { WorkoutRecord } from '../models/workoutRecords';
-import { Workout, NewWorkout } from '../types';
+import { WorkoutRecord as Record, NewWorkoutRecord } from '../types';
 
-const getAllRecords = async (): Promise<Workout[]> => {
+const getAllRecords = async (): Promise<Record[]> => {
     return await WorkoutRecord.find({});
 };
 
-const getRecord = async (id: string): Promise<Workout> => {
+const getRecord = async (id: string): Promise<Record> => {
     const record = await WorkoutRecord.findById(id);
     if (!record) {
         throw new Error(`Could not find record with id ${id}`);
@@ -13,17 +13,13 @@ const getRecord = async (id: string): Promise<Workout> => {
     return record.toJSON();
 };
 
-const createRecord = async (newRecord: NewWorkout): Promise<Workout> => {
-    const record = new WorkoutRecord({
-        title: newRecord.title,
-        day: newRecord.day,
-        exercises: newRecord.exercises
-    });
+const createRecord = async (newRecord: NewWorkoutRecord): Promise<Record> => {
+    const record = new WorkoutRecord(newRecord);
     const savedRecord = await record.save();
     return savedRecord.toJSON();
 };
 
-const updateRecord = async (id: string, newRecord: NewWorkout): Promise<Workout> => {
+const updateRecord = async (id: string, newRecord: NewWorkoutRecord): Promise<Record> => {
     const updatedRecord = await WorkoutRecord.findByIdAndUpdate(id, newRecord, { new: true });
     if (!updatedRecord) {
         throw new Error(`Could not find record with id ${id}`);
