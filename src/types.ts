@@ -31,12 +31,12 @@ export type NewWorkout = {
     title: string;
     day: Days;
     exercises: NewExercise[];
-}
+};
 
 export interface WorkoutRecord extends Workout {
-    date: Date;
+    date: string;
 }
 
 export interface NewWorkoutRecord extends NewWorkout {
-    date: Date;
+    date: string;
 }

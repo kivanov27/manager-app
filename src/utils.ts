@@ -66,9 +66,9 @@ const isDay = (day: string): day is Days => {
     return Object.values(Days).includes(day as Days);
 };
 
-const isDate = (date: unknown): date is Date => {
-    return date instanceof Date && !isNaN(date.getTime());
-};
+//const isDate = (date: unknown): date is Date => {
+//    return date instanceof Date && !isNaN(date.getTime());
+//};
 
 const parseTitle = (title: unknown): string => {
     if (!isString(title)) {
@@ -84,8 +84,8 @@ const parseDay = (day: unknown): Days => {
     return day;
 };
 
-const parseDate = (date: unknown): Date => {
-    if(!isDate(date)) {
+const parseDate = (date: unknown): string => {
+    if(!isString(date)) {
         throw new Error('Incorrect or missing date:' + date);
     }
     return date;
