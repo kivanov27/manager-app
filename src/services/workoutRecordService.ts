@@ -1,26 +1,26 @@
-import { WorkoutRecord } from '../models/workoutRecords';
-import { WorkoutRecord as Record, NewWorkoutRecord } from '../types';
+import { WorkoutRecord as Record } from '../models/workoutRecords';
+import { WorkoutRecord, NewWorkoutRecord } from '../types';
 
-const getAllRecords = async (): Promise<Record[]> => {
-    return await WorkoutRecord.find({});
+const getAllRecords = async (): Promise<WorkoutRecord[]> => {
+    return await Record.find({});
 };
 
-const getRecord = async (id: string): Promise<Record> => {
-    const record = await WorkoutRecord.findById(id);
+const getRecord = async (id: string): Promise<WorkoutRecord> => {
+    const record = await Record.findById(id);
     if (!record) {
         throw new Error(`Could not find record with id ${id}`);
     }
     return record.toJSON();
 };
 
-const createRecord = async (newRecord: NewWorkoutRecord): Promise<Record> => {
-    const record = new WorkoutRecord(newRecord);
+const createRecord = async (newRecord: NewWorkoutRecord): Promise<WorkoutRecord> => {
+    const record = new Record(newRecord);
     const savedRecord = await record.save();
     return savedRecord.toJSON();
 };
 
-const updateRecord = async (id: string, newRecord: NewWorkoutRecord): Promise<Record> => {
-    const updatedRecord = await WorkoutRecord.findByIdAndUpdate(id, newRecord, { new: true });
+const updateRecord = async (id: string, newRecord: NewWorkoutRecord): Promise<WorkoutRecord> => {
+    const updatedRecord = await Record.findByIdAndUpdate(id, newRecord, { new: true });
     if (!updatedRecord) {
         throw new Error(`Could not find record with id ${id}`);
     }
@@ -28,7 +28,7 @@ const updateRecord = async (id: string, newRecord: NewWorkoutRecord): Promise<Re
 };
 
 const deleteRecord = async (id: string) => {
-    return await WorkoutRecord.findByIdAndDelete(id);
+    return await Record.findByIdAndDelete(id);
 };
 
 export default {
