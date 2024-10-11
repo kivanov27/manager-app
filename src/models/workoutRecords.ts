@@ -5,7 +5,7 @@ import { exerciseSchema } from "./exercise";
 interface IWorkoutRecord extends Document {
     title: string;
     day: string;
-    date: Date;
+    date: string;
     exercises: Exercise[];
 }
 
@@ -19,7 +19,7 @@ const workoutRecordSchema = new Schema<IWorkoutRecord>({
         required: true
     },
     date: {
-        type: Date,
+        type: String,
     required: true
     },
     exercises: [exerciseSchema]
