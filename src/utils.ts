@@ -1,4 +1,4 @@
-import { NewWorkout, NewExercise, Days, NewWorkoutRecord } from './types';
+import { NewWorkout, NewExercise, Days, NewWorkoutRecord, HabitDay, NewHabit } from './types';
 
 const toNewWorkout = (obj: unknown): NewWorkout => {
     if (!obj || typeof obj !== 'object') {
@@ -58,6 +58,23 @@ const toNewWorkoutRecord = (obj: unknown): NewWorkoutRecord => {
     throw new Error('Incorrect data: you need title, day and date at least.');
 };
 
+const toNewHabit = (obj: unknown): NewHabit => {
+    if (!obj || typeof obj !== 'object') {
+        throw new Error('Incorrect or missing data');
+    }
+
+    if ('name' in obj && 'days' in obj) {
+        const newHabit: NewHabit = {
+            name: parseName(obj.name),
+            days: parseHabitDays(obj.days)
+        };
+
+        return newHabit;
+    }
+
+    throw new Error('Incorrect data: you need name and days');
+};
+
 const isString = (text: unknown): text is string => {
     return typeof text === 'string' || text instanceof String;
 };
@@ -66,9 +83,13 @@ const isDay = (day: string): day is Days => {
     return Object.values(Days).includes(day as Days);
 };
 
-//const isDate = (date: unknown): date is Date => {
-//    return date instanceof Date && !isNaN(date.getTime());
-//};
+const isDate = (date: unknown): date is Date => {
+   return date instanceof Date && !isNaN(date.getTime());
+};
+
+const isBoolean = (bool: unknown): bool is boolean => {
+    return typeof bool === 'boolean';
+};
 
 const parseTitle = (title: unknown): string => {
     if (!isString(title)) {
@@ -157,4 +178,26 @@ const parseWeight = (weight: unknown): string => {
     return weight;
 };
 
-export { toNewWorkout, toNewExercise, toNewWorkoutRecord };
+const parseHabitDay = (day: unknown): HabitDay => {
+    if (!day || typeof day !== 'object') {
+        throw new Error('Incorrect or missing habit day data');
+    }
+
+    if ('date' in day && 'completed' in day) {
+        if (isDate(day.date) && isBoolean(day.completed)) {
+            return { date: day.date, completed: day.completed };
+        }
+    }
+
+    throw new Error('Incorrect or missing habit day data');
+};
+
+const parseHabitDays = (days: unknown): HabitDay[] => {
+    if (!Array.isArray(days)) {
+        throw new Error('Incorrect or missing habit days');
+    }
+
+    return days.map(day => parseHabitDay(day));
+};
+
+export { toNewWorkout, toNewExercise, toNewWorkoutRecord, toNewHabit };

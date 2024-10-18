@@ -20,6 +20,7 @@ export interface Exercise {
 
 export type NewExercise = Omit<Exercise, 'id'>;
 
+
 export interface Workout {
     id: string;
     title: string;
@@ -33,10 +34,24 @@ export type NewWorkout = {
     exercises: NewExercise[];
 };
 
+
 export interface WorkoutRecord extends Workout {
     date: string;
+}
+
+export interface HabitDay {
+    date: Date;
+    completed: boolean;
 }
 
 export interface NewWorkoutRecord extends NewWorkout {
     date: string;
 }
+
+export interface Habit {
+    id: string;
+    name: string;
+    days: HabitDay[];
+};
+
+export type NewHabit = Omit<Habit, 'id'>;
