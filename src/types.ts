@@ -52,6 +52,6 @@ export interface Habit {
     id: string;
     name: string;
     days: HabitDay[];
-};
+}
 
 export type NewHabit = Omit<Habit, 'id'>;

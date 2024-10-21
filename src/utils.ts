@@ -179,6 +179,9 @@ const parseWeight = (weight: unknown): string => {
 };
 
 const parseHabitDay = (day: unknown): HabitDay => {
+    const Day = day as HabitDay;
+    console.log('Is date:', isDate(Day.date), '| Is boolean:', isBoolean(Day.completed));
+
     if (!day || typeof day !== 'object') {
         throw new Error('Incorrect or missing habit day data');
     }
