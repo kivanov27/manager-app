@@ -21,19 +21,21 @@ const assert_1 = __importDefault(require("assert"));
 const api = (0, supertest_1.default)(app_1.default);
 const initialHabits = [
     {
+        id: '1',
         name: 'habit1',
-        day: {
+        days: {
             date: new Date(),
-            completed: false
-        }
+            completed: false,
+        },
     },
     {
+        id: '2',
         name: 'habit2',
-        day: {
+        days: {
             date: new Date('October 18'),
-            completed: true
-        }
-    }
+            completed: true,
+        },
+    },
 ];
 (0, node_test_1.beforeEach)(() => __awaiter(void 0, void 0, void 0, function* () {
     yield habit_1.Habit.deleteMany({});

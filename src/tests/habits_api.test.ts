@@ -9,19 +9,21 @@ const api = supertest(app);
 
 const initialHabits = [
     {
+        id: '1',
         name: 'habit1',
-        day: {
+        days: {
             date: new Date(),
-            completed: false
-        }
+            completed: false,
+        },
     },
     {
+        id: '2',
         name: 'habit2',
-        day: {
+        days: {
             date: new Date('October 18'),
-            completed: true
-        }
-    }
+            completed: true,
+        },
+    },
 ];
 
 beforeEach(async () => {
