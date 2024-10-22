@@ -1,6 +1,7 @@
-import express from "express";
-
-const requestLogger = (req: express.Request, _res: express.Response, next: express.NextFunction): void => {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.errorHandler = exports.unknownEndpoint = exports.requestLogger = void 0;
+const requestLogger = (req, _res, next) => {
     if (process.env.NODE_ENV !== 'test') {
         console.log('Method:', req.method);
         console.log('Path:', req.path);
@@ -9,22 +10,19 @@ const requestLogger = (req: express.Request, _res: express.Response, next: expre
         next();
     }
 };
-
-const unknownEndpoint = (_req: express.Request, res: express.Response) => {
+exports.requestLogger = requestLogger;
+const unknownEndpoint = (_req, res) => {
     res.status(404).send({ error: 'unknown endpoint' });
 };
-
-const errorHandler = (error: Error, _req: express.Request, res: express.Response, next: express.NextFunction): void => {
+exports.unknownEndpoint = unknownEndpoint;
+const errorHandler = (error, _req, res, next) => {
     console.error(error.message);
-    
     if (error.name === 'CastError') {
         res.status(400).send({ error: 'malformatted id' });
     }
     else if (error.name === 'ValidationError') {
         res.status(400).json({ error: error.message });
     }
-
     next(error);
 };
-
-export { requestLogger, unknownEndpoint, errorHandler };
+exports.errorHandler = errorHandler;
