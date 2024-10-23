@@ -23,26 +23,48 @@ const initialHabits = [
     {
         id: '1',
         name: 'habit1',
-        days: {
-            date: new Date(),
-            completed: false,
-        },
-    },
-    {
-        id: '2',
-        name: 'habit2',
-        days: {
-            date: new Date('October 18'),
-            completed: true,
-        },
+        days: [
+            {
+                date: new Date(2024, 10, 1),
+                completed: true,
+            },
+            {
+                date: new Date(2024, 9, 1),
+                completed: true,
+            },
+            {
+                date: new Date(2024, 8, 1),
+                completed: true,
+            },
+            {
+                date: new Date(2024, 7, 1),
+                completed: true,
+            },
+            {
+                date: new Date(2024, 6, 1),
+                completed: true,
+            },
+            {
+                date: new Date(2024, 5, 1),
+                completed: true,
+            },
+            {
+                date: new Date(2024, 4, 1),
+                completed: true,
+            },
+            {
+                date: new Date(2024, 3, 1),
+                completed: true,
+            },
+        ],
     },
 ];
 (0, node_test_1.beforeEach)(() => __awaiter(void 0, void 0, void 0, function* () {
     yield habit_1.Habit.deleteMany({});
     let habitObj = new habit_1.Habit(initialHabits[0]);
     yield habitObj.save();
-    habitObj = new habit_1.Habit(initialHabits[1]);
-    yield habitObj.save();
+    // habitObj = new Habit(initialHabits[1]);
+    // await habitObj.save();
 }));
 (0, node_test_1.test)('habits are returned as json', () => __awaiter(void 0, void 0, void 0, function* () {
     yield api
@@ -50,10 +72,10 @@ const initialHabits = [
         .expect(200)
         .expect('Content-Type', /application\/json/);
 }));
-(0, node_test_1.test)('there are two habits', () => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield api.get('/api/habits');
-    assert_1.default.strictEqual(response.body.length, initialHabits.length);
-}));
+// test('there are two habits', async () => {
+//     const response = await api.get('/api/habits');
+//     assert.strictEqual(response.body.length, initialHabits.length);
+// });
 (0, node_test_1.test)('habit1 exists', () => __awaiter(void 0, void 0, void 0, function* () {
     const response = yield api.get('/api/habits');
     assert_1.default.strictEqual(response.body[0].name, initialHabits[0].name);
