@@ -39,13 +39,13 @@ export interface WorkoutRecord extends Workout {
     date: string;
 }
 
+export interface NewWorkoutRecord extends NewWorkout {
+    date: string;
+}
+
 export interface HabitDay {
     date: Date;
     completed: boolean;
-}
-
-export interface NewWorkoutRecord extends NewWorkout {
-    date: string;
 }
 
 export interface Habit {

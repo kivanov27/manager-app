@@ -178,10 +178,14 @@ const parseWeight = (weight: unknown): string => {
     return weight;
 };
 
-const parseHabitDay = (day: unknown): HabitDay => {
-    const Day = day as HabitDay;
-    console.log('Is date:', isDate(Day.date), '| Is boolean:', isBoolean(Day.completed));
+const parseHabitDate = (date: unknown): Date => {
+    if (!isString(date)) {
+        throw new Error('Incorrect value for date:' + date);
+    }
+    return new Date(date);
+};
 
+const parseHabitDay = (day: unknown): HabitDay => {
     if (!day || typeof day !== 'object') {
         throw new Error('Incorrect or missing habit day data');
     }
@@ -189,6 +193,9 @@ const parseHabitDay = (day: unknown): HabitDay => {
     if ('date' in day && 'completed' in day) {
         if (isDate(day.date) && isBoolean(day.completed)) {
             return { date: day.date, completed: day.completed };
+        }
+        else if (!isDate(day.date) && isBoolean(day.completed)) {
+            return { date: parseHabitDate(day.date), completed: day.completed };
         }
     }
 
