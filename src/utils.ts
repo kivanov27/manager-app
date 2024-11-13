@@ -1,4 +1,4 @@
-import { NewWorkout, NewExercise, Days, NewWorkoutRecord, HabitDay, NewHabit } from './types';
+import { NewWorkout, NewExercise, Days, NewWorkoutRecord, HabitDay, NewHabit, NewTimetable, Task } from './types';
 
 const toNewWorkout = (obj: unknown): NewWorkout => {
     if (!obj || typeof obj !== 'object') {
@@ -73,6 +73,22 @@ const toNewHabit = (obj: unknown): NewHabit => {
     }
 
     throw new Error('Incorrect data: you need name and days');
+};
+
+const toNewTimetable = (obj: unknown): NewTimetable => {
+    if (!obj || typeof obj !== 'object') {
+        throw new Error('Incorrect or missing data');
+    }
+    
+    if ('tasks' in obj) {
+        const newTimetable: NewTimetable = {
+            tasks: parseTasks(obj.tasks)
+        };
+
+        return newTimetable;
+    }
+
+    throw new Error('Incorrect data: you need tasks');
 };
 
 const isString = (text: unknown): text is string => {
@@ -178,7 +194,7 @@ const parseWeight = (weight: unknown): string => {
     return weight;
 };
 
-const parseHabitDate = (date: unknown): Date => {
+const parseRealDate = (date: unknown): Date => {
     if (!isString(date)) {
         throw new Error('Incorrect value for date:' + date);
     }
@@ -195,7 +211,7 @@ const parseHabitDay = (day: unknown): HabitDay => {
             return { date: day.date, completed: day.completed };
         }
         else if (!isDate(day.date) && isBoolean(day.completed)) {
-            return { date: parseHabitDate(day.date), completed: day.completed };
+            return { date: parseRealDate(day.date), completed: day.completed };
         }
     }
 
@@ -210,4 +226,29 @@ const parseHabitDays = (days: unknown): HabitDay[] => {
     return days.map(day => parseHabitDay(day));
 };
 
-export { toNewWorkout, toNewExercise, toNewWorkoutRecord, toNewHabit };
+const parseTask = (task: unknown): Task => {
+    if (!task || typeof task !== 'object') {
+        throw new Error('Incorrect or missing timetable task data');
+    }
+
+    if ('startsAt' in task && 'endsAt' in task && 'task' in task && 'completed' in task) {
+        if (isDate(task.startsAt) && isDate(task.endsAt) && isString(task.task) && isBoolean(task.completed)) {
+            return { startsAt: task.startsAt, endsAt: task.endsAt, task: task.task, completed: task.completed };
+        }
+        else if (!isDate(task.startsAt) && !isDate(task.endsAt) && isString(task.task) && isBoolean(task.completed)) {
+            return { startsAt: parseRealDate(task.startsAt), endsAt: parseRealDate(task.endsAt), task: task.task, completed: task.completed };
+        }
+    }
+
+    throw new Error('Incorrect timetable task data');
+};
+
+const parseTasks = (tasks: unknown): Task[] => {
+    if (!Array.isArray(tasks)) {
+        throw new Error('Incorrect or missing timetable tasks');
+    }
+
+    return tasks.map(task => parseTask(task));
+};
+
+export { toNewWorkout, toNewExercise, toNewWorkoutRecord, toNewHabit, toNewTimetable };

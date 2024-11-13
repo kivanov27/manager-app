@@ -55,3 +55,16 @@ export interface Habit {
 }
 
 export type NewHabit = Omit<Habit, 'id'>;
+
+export interface Task {
+    startsAt: Date;
+    endsAt: Date;
+    task: string;
+    completed: boolean;
+}
+
+export interface Timetable {
+    tasks: Task[];
+}
+
+export type NewTimetable = Omit<Timetable, 'id'>;
