@@ -80,8 +80,9 @@ const toNewTimetable = (obj: unknown): NewTimetable => {
         throw new Error('Incorrect or missing data');
     }
     
-    if ('tasks' in obj) {
+    if ('name' in obj && 'tasks' in obj) {
         const newTimetable: NewTimetable = {
+            name: parseName(obj.name),
             tasks: parseTasks(obj.tasks)
         };
 

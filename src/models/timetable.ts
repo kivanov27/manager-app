@@ -8,6 +8,7 @@ interface ITask {
 }
 
 interface ITimetable extends Document {
+    name: string,
     tasks: ITask[]
 }
 
@@ -28,6 +29,10 @@ const taskSchema = new Schema<ITask>({
 });
 
 const timetableSchema = new Schema<ITimetable>({
+    name: {
+        type: String,
+        required: true
+    },
     tasks: [taskSchema]
 });
 

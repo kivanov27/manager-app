@@ -65,6 +65,7 @@ export interface Task {
 
 export interface Timetable {
     id: string;
+    name: string;
     tasks: Task[];
 }
 
