@@ -63,10 +63,4 @@ export interface Task {
     completed: boolean;
 }
 
-export interface Timetable {
-    id: string;
-    name: string;
-    tasks: Task[];
-}
-
-export type NewTimetable = Omit<Timetable, 'id'>;
+export type NewTask = Omit<Task, 'id'>;

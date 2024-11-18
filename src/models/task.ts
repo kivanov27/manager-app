@@ -1,15 +1,10 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-interface ITask {
+interface ITask extends Document {
     startsAt: Date,
     endsAt: Date,
     task: string,
     completed: boolean
-}
-
-interface ITimetable extends Document {
-    name: string,
-    tasks: ITask[]
 }
 
 const taskSchema = new Schema<ITask>({
@@ -17,7 +12,10 @@ const taskSchema = new Schema<ITask>({
         type: Date,
         required: true
     },
-    endsAt: Date,
+    endsAt: {
+        type: Date,
+        required: true
+    },
     task: {
         type: String,
         required: true
@@ -28,16 +26,8 @@ const taskSchema = new Schema<ITask>({
     }
 });
 
-const timetableSchema = new Schema<ITimetable>({
-    name: {
-        type: String,
-        required: true
-    },
-    tasks: [taskSchema]
-});
-
-timetableSchema.set('toJSON', {
-    transform: (_document, returnedObject: Partial<ITimetable & { _id: mongoose.Types.ObjectId }>) => {
+taskSchema.set('toJSON', {
+    transform: (_document, returnedObject: Partial<ITask & { _id: mongoose.Types.ObjectId }>) => {
         if (returnedObject._id) {
             returnedObject.id = returnedObject._id.toString();
             delete returnedObject._id;
@@ -46,4 +36,4 @@ timetableSchema.set('toJSON', {
     }
 });
 
-export const Timetable = mongoose.model<ITimetable>('Timetable', timetableSchema);
+export const Task = mongoose.model<ITask>('Task', taskSchema);

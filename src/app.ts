@@ -7,7 +7,7 @@ import { URL } from './utils/config';
 import workoutRouter from './routes/workouts';
 import workoutRecordRouter from './routes/workoutRecords';
 import habitRouter from './routes/habits';
-import timetableRouter from './routes/timetable';
+import taskRouter from './routes/tasks';
 import * as middleware from './utils/middleware';
 
 mongoose.set('strictQuery', false);
@@ -30,7 +30,7 @@ app.use(middleware.requestLogger);
 app.use('/api/workouts', workoutRouter);
 app.use('/api/workoutRecords', workoutRecordRouter);
 app.use('/api/habits', habitRouter);
-app.use('/api/timetable', timetableRouter);
+app.use('/api/timetable', taskRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
