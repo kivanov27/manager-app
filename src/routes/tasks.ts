@@ -16,13 +16,13 @@ taskRouter.get('/:id', expressAsyncHandler(async (req, res) => {
 }));
 
 taskRouter.post('/', expressAsyncHandler(async (req, res) => {
-    const newTask = toNewTask(req.params.body);
+    const newTask = toNewTask(req.body);
     const task = await taskService.createTask(newTask);
     res.status(201).json(task);
 }));
 
 taskRouter.put('/:id', expressAsyncHandler(async (req, res) => {
-    const updatedTask = toNewTask(req.params.body);
+    const updatedTask = toNewTask(req.body);
     const task = await taskService.updateTask(req.params.id, updatedTask);
     res.json(task);
 }));

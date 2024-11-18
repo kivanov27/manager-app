@@ -76,6 +76,8 @@ const toNewHabit = (obj: unknown): NewHabit => {
 };
 
 const toNewTask = (obj: unknown): NewTask => {
+    console.log(obj as NewTask);
+
     if (!obj || typeof obj !== 'object') {
         throw new Error('Incorrect or missing data');
     }
