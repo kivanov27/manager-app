@@ -30,7 +30,7 @@ app.use(middleware.requestLogger);
 app.use('/api/workouts', workoutRouter);
 app.use('/api/workoutRecords', workoutRecordRouter);
 app.use('/api/habits', habitRouter);
-app.use('/api/timetable', taskRouter);
+app.use('/api/tasks', taskRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
