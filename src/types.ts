@@ -57,6 +57,7 @@ export interface Habit {
 export type NewHabit = Omit<Habit, 'id'>;
 
 export interface Task {
+    id: string;
     startsAt: Date;
     endsAt: Date;
     task: string;
