@@ -1,4 +1,5 @@
-import { NewWorkout, NewExercise, Days, NewWorkoutRecord, HabitDay, NewHabit, NewTask } from './types';
+import { NewWorkout, NewExercise, Days, NewWorkoutRecord, HabitDay, NewHabit, NewTask, NewUser } from './types';
+import bcrypt from 'bcrypt';
 
 const toNewWorkout = (obj: unknown): NewWorkout => {
     if (!obj || typeof obj !== 'object') {
@@ -76,8 +77,6 @@ const toNewHabit = (obj: unknown): NewHabit => {
 };
 
 const toNewTask = (obj: unknown): NewTask => {
-    console.log(obj as NewTask);
-
     if (!obj || typeof obj !== 'object') {
         throw new Error('Incorrect or missing data');
     }
@@ -97,6 +96,22 @@ const toNewTask = (obj: unknown): NewTask => {
     throw new Error('Incorrect timetable obj data');
 };
 
+const toNewUser = async (obj: unknown): Promise<NewUser> => {
+    if (!obj || typeof obj !== 'object') {
+        throw new Error('Incorrect or missing data');
+    }
+
+    if ('username' in obj && 'password' in obj) {
+        const newUser: NewUser = {
+            username: parseUsername(obj.username),
+            passwordHash: await parsePassword(obj.password)
+        };
+        return newUser;
+    }
+
+    throw new Error('Incorrect or missing user data');
+};
+
 const isString = (text: unknown): text is string => {
     return typeof text === 'string' || text instanceof String;
 };
@@ -112,6 +127,13 @@ const isDate = (date: unknown): date is Date => {
 const isBoolean = (bool: unknown): bool is boolean => {
     return typeof bool === 'boolean';
 };
+
+// const parseObject = (obj: unknown): object => {
+//     if (!obj || typeof obj !== 'object') {
+//         throw new Error('Incorrect or missing data');
+//     }
+//     return obj;
+// };
 
 const parseTitle = (title: unknown): string => {
     if (!isString(title)) {
@@ -232,4 +254,19 @@ const parseHabitDays = (days: unknown): HabitDay[] => {
     return days.map(day => parseHabitDay(day));
 };
 
-export { toNewWorkout, toNewExercise, toNewWorkoutRecord, toNewHabit, toNewTask };
+const parseUsername = (username: unknown): string => {
+    if (!isString(username)) {
+        throw new Error('Incorrect or missing username');
+    }
+    return username;
+};
+
+const parsePassword = async (pass: unknown): Promise<string> => {
+    if (!isString(pass)) {
+        throw new Error('Incorrect or missing password hash');
+    }
+    const saltRounds = 10;
+    return await bcrypt.hash(pass, saltRounds);
+};
+
+export { toNewWorkout, toNewExercise, toNewWorkoutRecord, toNewHabit, toNewTask, toNewUser };

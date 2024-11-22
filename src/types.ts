@@ -65,3 +65,11 @@ export interface Task {
 }
 
 export type NewTask = Omit<Task, 'id'>;
+
+export interface User {
+    id: string;
+    username: string;
+    passwordHash: string;
+}
+
+export type NewUser = Omit<User, 'id'>;
