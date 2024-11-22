@@ -8,6 +8,7 @@ import workoutRouter from './routes/workouts';
 import workoutRecordRouter from './routes/workoutRecords';
 import habitRouter from './routes/habits';
 import taskRouter from './routes/tasks';
+import userRouter from './routes/users';
 import * as middleware from './utils/middleware';
 
 mongoose.set('strictQuery', false);
@@ -31,6 +32,7 @@ app.use('/api/workouts', workoutRouter);
 app.use('/api/workoutRecords', workoutRecordRouter);
 app.use('/api/habits', habitRouter);
 app.use('/api/tasks', taskRouter);
+app.use('/api/users', userRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
