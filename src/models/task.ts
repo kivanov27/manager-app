@@ -1,10 +1,11 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 interface ITask extends Document {
-    startsAt: Date,
-    endsAt: Date,
-    task: string,
-    completed: boolean
+    startsAt: Date;
+    endsAt: Date;
+    task: string;
+    completed: boolean;
+    user: Schema.Types.ObjectId;
 }
 
 const taskSchema = new Schema<ITask>({
@@ -23,6 +24,10 @@ const taskSchema = new Schema<ITask>({
     completed: {
         type: Boolean,
         required: true
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }
 });
 

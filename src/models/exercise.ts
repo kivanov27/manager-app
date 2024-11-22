@@ -6,6 +6,7 @@ interface IExercise extends Document {
     reps?: string;
     duration?: string;
     weight?: string;
+    user?: Schema.Types.ObjectId;
 }
 
 export const exerciseSchema = new Schema<IExercise>({
@@ -16,7 +17,11 @@ export const exerciseSchema = new Schema<IExercise>({
     sets: String,
     reps: String,
     duration: String,
-    weight: String
+    weight: String,
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 });
 
 exerciseSchema.set('toJSON', {

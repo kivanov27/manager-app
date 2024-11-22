@@ -6,6 +6,7 @@ interface IWorkout extends Document {
     title: string;
     day: string;
     exercises: Exercise[];
+    user: Schema.Types.ObjectId;
 }
 
 const workoutSchema = new Schema<IWorkout>({
@@ -18,6 +19,10 @@ const workoutSchema = new Schema<IWorkout>({
         required: true
     },
     exercises: [exerciseSchema],
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 });
 
 workoutSchema.set('toJSON', {

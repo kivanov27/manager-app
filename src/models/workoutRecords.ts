@@ -7,6 +7,7 @@ interface IWorkoutRecord extends Document {
     day: string;
     date: string;
     exercises: Exercise[];
+    user: Schema.Types.ObjectId;
 }
 
 const workoutRecordSchema = new Schema<IWorkoutRecord>({
@@ -22,7 +23,11 @@ const workoutRecordSchema = new Schema<IWorkoutRecord>({
         type: String,
     required: true
     },
-    exercises: [exerciseSchema]
+    exercises: [exerciseSchema],
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 });
 
 workoutRecordSchema.set('toJSON', {

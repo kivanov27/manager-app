@@ -8,6 +8,7 @@ interface IDay {
 interface IHabit extends Document {
     name: string;
     days: IDay[];
+    user: Schema.Types.ObjectId;
 }
 
 const daySchema = new Schema<IDay>({
@@ -30,6 +31,10 @@ const habitSchema = new Schema<IHabit>({
         type: [daySchema],
         required: true
     },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 });
 
 habitSchema.set('toJSON', {
