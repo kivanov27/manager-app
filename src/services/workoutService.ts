@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import { Exercise } from '../models/exercise';
 import { Workout } from '../models/workout';
 import { Workout as WorkoutEntry, NewWorkout, NewExercise } from '../types';
+// import { User } from '../models/user';
 
 const getAllWorkouts = async (): Promise<WorkoutEntry[]> => {
     return await Workout.find({});
@@ -16,10 +17,12 @@ const getWorkout = async (id: string): Promise<WorkoutEntry> => {
 };
 
 const createWorkout = async (newWorkout: NewWorkout): Promise<WorkoutEntry> => {
+    // const user = await User.findById(newWorkout.userId);
     const workout = new Workout({
         title: newWorkout.title,
         day: newWorkout.day,
-        exercises: newWorkout.exercises
+        exercises: newWorkout.exercises,
+        // user: user.id
     });
     const savedWorkout = await workout.save();
     return savedWorkout.toJSON() as WorkoutEntry;

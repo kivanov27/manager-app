@@ -1,5 +1,6 @@
 import { WorkoutRecord as Record } from '../models/workoutRecords';
 import { WorkoutRecord, NewWorkoutRecord } from '../types';
+// import { User } from '../models/user';
 
 const getAllRecords = async (): Promise<WorkoutRecord[]> => {
     return await Record.find({});
@@ -14,6 +15,14 @@ const getRecord = async (id: string): Promise<WorkoutRecord> => {
 };
 
 const createRecord = async (newRecord: NewWorkoutRecord): Promise<WorkoutRecord> => {
+    // const user = await User.findById(userId);
+    // const record = new Record({
+    //     title: newRecord.title,
+    //     day: newRecord.day,
+    //     date: newRecord.date,
+    //     exercises: newRecord.exercises,
+    //     user: user.id
+    // });
     const record = new Record(newRecord);
     const savedRecord = await record.save();
     return savedRecord.toJSON();

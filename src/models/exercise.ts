@@ -18,10 +18,6 @@ export const exerciseSchema = new Schema<IExercise>({
     reps: String,
     duration: String,
     weight: String,
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    }
 });
 
 exerciseSchema.set('toJSON', {

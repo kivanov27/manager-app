@@ -1,7 +1,20 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.toNewHabit = exports.toNewWorkoutRecord = exports.toNewExercise = exports.toNewWorkout = void 0;
+exports.toNewUser = exports.toNewTask = exports.toNewHabit = exports.toNewWorkoutRecord = exports.toNewExercise = exports.toNewWorkout = void 0;
 const types_1 = require("./types");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const toNewWorkout = (obj) => {
     if (!obj || typeof obj !== 'object') {
         throw new Error('Incorrect or missing data');
@@ -68,6 +81,38 @@ const toNewHabit = (obj) => {
     throw new Error('Incorrect data: you need name and days');
 };
 exports.toNewHabit = toNewHabit;
+const toNewTask = (obj) => {
+    if (!obj || typeof obj !== 'object') {
+        throw new Error('Incorrect or missing data');
+    }
+    if ('startsAt' in obj && 'endsAt' in obj && 'task' in obj && 'completed' in obj) {
+        if (isDate(parseRealDate(obj.startsAt)) && isDate(parseRealDate(obj.endsAt)) && isString(obj.task) && isBoolean(obj.completed)) {
+            const newTask = {
+                startsAt: parseRealDate(obj.startsAt),
+                endsAt: parseRealDate(obj.endsAt),
+                task: obj.task,
+                completed: obj.completed
+            };
+            return newTask;
+        }
+    }
+    throw new Error('Incorrect timetable obj data');
+};
+exports.toNewTask = toNewTask;
+const toNewUser = (obj) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!obj || typeof obj !== 'object') {
+        throw new Error('Incorrect or missing data');
+    }
+    if ('username' in obj && 'password' in obj) {
+        const newUser = {
+            username: parseUsername(obj.username),
+            passwordHash: yield parsePassword(obj.password)
+        };
+        return newUser;
+    }
+    throw new Error('Incorrect or missing user data');
+});
+exports.toNewUser = toNewUser;
 const isString = (text) => {
     return typeof text === 'string' || text instanceof String;
 };
@@ -80,6 +125,12 @@ const isDate = (date) => {
 const isBoolean = (bool) => {
     return typeof bool === 'boolean';
 };
+// const parseObject = (obj: unknown): object => {
+//     if (!obj || typeof obj !== 'object') {
+//         throw new Error('Incorrect or missing data');
+//     }
+//     return obj;
+// };
 const parseTitle = (title) => {
     if (!isString(title)) {
         throw new Error('Incorrect or missing title:' + title);
@@ -152,15 +203,22 @@ const parseWeight = (weight) => {
     }
     return weight;
 };
+const parseRealDate = (date) => {
+    if (!isString(date)) {
+        throw new Error('Incorrect value for date:' + date);
+    }
+    return new Date(date);
+};
 const parseHabitDay = (day) => {
-    const Day = day;
-    console.log('Is date:', isDate(Day.date), '| Is boolean:', isBoolean(Day.completed));
     if (!day || typeof day !== 'object') {
         throw new Error('Incorrect or missing habit day data');
     }
     if ('date' in day && 'completed' in day) {
         if (isDate(day.date) && isBoolean(day.completed)) {
             return { date: day.date, completed: day.completed };
+        }
+        else if (!isDate(day.date) && isBoolean(day.completed)) {
+            return { date: parseRealDate(day.date), completed: day.completed };
         }
     }
     throw new Error('Incorrect or missing habit day data');
@@ -171,3 +229,16 @@ const parseHabitDays = (days) => {
     }
     return days.map(day => parseHabitDay(day));
 };
+const parseUsername = (username) => {
+    if (!isString(username)) {
+        throw new Error('Incorrect or missing username');
+    }
+    return username;
+};
+const parsePassword = (pass) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!isString(pass)) {
+        throw new Error('Incorrect or missing password hash');
+    }
+    const saltRounds = 10;
+    return yield bcrypt_1.default.hash(pass, saltRounds);
+});

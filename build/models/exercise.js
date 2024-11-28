@@ -33,7 +33,11 @@ exports.exerciseSchema = new mongoose_1.Schema({
     sets: String,
     reps: String,
     duration: String,
-    weight: String
+    weight: String,
+    user: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: 'User'
+    }
 });
 exports.exerciseSchema.set('toJSON', {
     transform: (_document, returnedObject) => {

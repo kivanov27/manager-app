@@ -1,5 +1,6 @@
 import { Task as TaskModel } from "../models/task";
 import { Task, NewTask } from "../types";
+// import { User } from "../models/user";
 
 const getAllTasks = async (): Promise<Task[]> => {
     return await TaskModel.find({});
@@ -14,6 +15,14 @@ const getTask = async (id: string): Promise<Task> => {
 };
 
 const createTask = async (newTask: NewTask): Promise<Task> => {
+    // const user = await User.findById(userId);
+    // const task = new TaskModel({
+    //     startsAt: newTask.startsAt,
+    //     endsAt: newTask.endsAt,
+    //     task: newTask.task,
+    //     completed: newTask.completed,
+    //     user: user.id
+    // });
     const task = new TaskModel(newTask);
     const savedTask = await task.save();
     return savedTask.toJSON();

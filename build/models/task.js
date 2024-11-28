@@ -23,25 +23,31 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Workout = void 0;
+exports.Task = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
-const exercise_1 = require("./exercise");
-const workoutSchema = new mongoose_1.Schema({
-    title: {
+const taskSchema = new mongoose_1.Schema({
+    startsAt: {
+        type: Date,
+        required: true
+    },
+    endsAt: {
+        type: Date,
+        required: true
+    },
+    task: {
         type: String,
         required: true
     },
-    day: {
-        type: String,
+    completed: {
+        type: Boolean,
         required: true
     },
-    exercises: [exercise_1.exerciseSchema],
     user: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: 'User'
     }
 });
-workoutSchema.set('toJSON', {
+taskSchema.set('toJSON', {
     transform: (_document, returnedObject) => {
         if (returnedObject._id) {
             returnedObject.id = returnedObject._id.toString();
@@ -50,4 +56,4 @@ workoutSchema.set('toJSON', {
         }
     }
 });
-exports.Workout = mongoose_1.default.model('Workout', workoutSchema);
+exports.Task = mongoose_1.default.model('Task', taskSchema);

@@ -44,6 +44,10 @@ const habitSchema = new mongoose_1.Schema({
         type: [daySchema],
         required: true
     },
+    user: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: 'User'
+    }
 });
 habitSchema.set('toJSON', {
     transform: (_document, returnedObject) => {

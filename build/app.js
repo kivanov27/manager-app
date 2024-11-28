@@ -34,6 +34,8 @@ const config_1 = require("./utils/config");
 const workouts_1 = __importDefault(require("./routes/workouts"));
 const workoutRecords_1 = __importDefault(require("./routes/workoutRecords"));
 const habits_1 = __importDefault(require("./routes/habits"));
+const tasks_1 = __importDefault(require("./routes/tasks"));
+const users_1 = __importDefault(require("./routes/users"));
 const middleware = __importStar(require("./utils/middleware"));
 mongoose_1.default.set('strictQuery', false);
 if (config_1.URL) {
@@ -52,6 +54,8 @@ app.use(middleware.requestLogger);
 app.use('/api/workouts', workouts_1.default);
 app.use('/api/workoutRecords', workoutRecords_1.default);
 app.use('/api/habits', habits_1.default);
+app.use('/api/tasks', tasks_1.default);
+app.use('/api/users', users_1.default);
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
 exports.default = app;

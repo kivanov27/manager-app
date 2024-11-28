@@ -39,7 +39,11 @@ const workoutRecordSchema = new mongoose_1.Schema({
         type: String,
         required: true
     },
-    exercises: [exercise_1.exerciseSchema]
+    exercises: [exercise_1.exerciseSchema],
+    user: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: 'User'
+    }
 });
 workoutRecordSchema.set('toJSON', {
     transform: (_document, returnedObject) => {
