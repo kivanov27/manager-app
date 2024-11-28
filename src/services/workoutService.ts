@@ -25,6 +25,7 @@ const createWorkout = async (newWorkout: NewWorkout): Promise<WorkoutEntry> => {
         // user: user.id
     });
     const savedWorkout = await workout.save();
+    // user.workouts = user.workouts.concat(savedWorkout._id);
     return savedWorkout.toJSON() as WorkoutEntry;
 };
 

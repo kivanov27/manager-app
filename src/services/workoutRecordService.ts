@@ -25,6 +25,7 @@ const createRecord = async (newRecord: NewWorkoutRecord): Promise<WorkoutRecord>
     // });
     const record = new Record(newRecord);
     const savedRecord = await record.save();
+    // user.workoutRecords = user.workoutRecords.concat(savedRecord._id);
     return savedRecord.toJSON();
 };
 

@@ -25,6 +25,7 @@ const createTask = async (newTask: NewTask): Promise<Task> => {
     // });
     const task = new TaskModel(newTask);
     const savedTask = await task.save();
+    // user.tasks = user.tasks.concat(savedTask._id);
     return savedTask.toJSON();
 };
 

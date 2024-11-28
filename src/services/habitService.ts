@@ -23,6 +23,7 @@ const createHabit = async (newHabit: NewHabit): Promise<Habit> => {
     // });
     const habit = new HabitModel(newHabit);
     const savedHabit = await habit.save();
+    // user.habits = user.habits.concat(savedHabit._id);
     return savedHabit.toJSON();
 };
 
