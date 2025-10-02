@@ -3,13 +3,13 @@ const app = express();
 import cors from 'cors';
 import mongoose from 'mongoose';
 
-import { URL } from './utils/config';
-import workoutRouter from './routes/workouts';
-import workoutRecordRouter from './routes/workoutRecords';
-import habitRouter from './routes/habits';
-import taskRouter from './routes/tasks';
-import userRouter from './routes/users';
-import * as middleware from './utils/middleware';
+import { URL } from './utils/config.ts';
+import workoutRouter from './routes/workouts.ts';
+import workoutRecordRouter from './routes/workoutRecords.ts';
+import habitRouter from './routes/habits.ts';
+import taskRouter from './routes/tasks.ts';
+import userRouter from './routes/users.ts';
+import * as middleware from './utils/middleware.ts';
 
 mongoose.set('strictQuery', false);
 

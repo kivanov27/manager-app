@@ -1,7 +1,7 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
-import workoutRecordService from '../services/workoutRecordService';
-import { toNewWorkoutRecord } from '../utils';
+import workoutRecordService from '../services/workoutRecordService.ts';
+import { toNewWorkoutRecord } from '../utils.ts';
 
 const workoutRecordRouter = express.Router();
 

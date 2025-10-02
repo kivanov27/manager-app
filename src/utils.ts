@@ -1,4 +1,4 @@
-import { NewWorkout, NewExercise, Days, NewWorkoutRecord, HabitDay, NewHabit, NewTask, NewUser } from './types';
+import { NewWorkout, NewExercise, Days, NewWorkoutRecord, HabitDay, NewHabit, NewTask, NewUser } from './types.ts';
 import bcrypt from 'bcrypt';
 
 const toNewWorkout = (obj: unknown): NewWorkout => {

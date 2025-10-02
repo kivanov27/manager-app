@@ -1,5 +1,5 @@
-import { WorkoutRecord as Record } from '../models/workoutRecords';
-import { WorkoutRecord, NewWorkoutRecord } from '../types';
+import { WorkoutRecord as Record } from '../models/workoutRecords.ts';
+import { WorkoutRecord, NewWorkoutRecord } from '../types.ts';
 
 const getAllRecords = async (): Promise<WorkoutRecord[]> => {
     return await Record.find({});

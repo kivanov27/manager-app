@@ -1,7 +1,7 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
-import habitService from '../services/habitService';
-import { toNewHabit } from '../utils';
+import habitService from '../services/habitService.ts';
+import { toNewHabit } from '../utils.ts';
 
 const habitRouter = express.Router();
 

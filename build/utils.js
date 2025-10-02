@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.toNewHabit = exports.toNewWorkoutRecord = exports.toNewExercise = exports.toNewWorkout = void 0;
-const types_1 = require("./types");
+import { Days } from './types';
+import bcrypt from 'bcrypt';
 const toNewWorkout = (obj) => {
     if (!obj || typeof obj !== 'object') {
         throw new Error('Incorrect or missing data');
@@ -16,7 +14,6 @@ const toNewWorkout = (obj) => {
     }
     throw new Error('Incorrect data: some fields are missing.');
 };
-exports.toNewWorkout = toNewWorkout;
 const toNewExercise = (obj) => {
     if (!obj || typeof obj !== 'object') {
         throw new Error('Incorrect or missing data');
@@ -37,7 +34,6 @@ const toNewExercise = (obj) => {
     }
     throw new Error('Incorrect data: you need a name at least.');
 };
-exports.toNewExercise = toNewExercise;
 const toNewWorkoutRecord = (obj) => {
     if (!obj || typeof obj !== 'object') {
         throw new Error('Incorrect or missing data');
@@ -53,7 +49,6 @@ const toNewWorkoutRecord = (obj) => {
     }
     throw new Error('Incorrect data: you need title, day and date at least.');
 };
-exports.toNewWorkoutRecord = toNewWorkoutRecord;
 const toNewHabit = (obj) => {
     if (!obj || typeof obj !== 'object') {
         throw new Error('Incorrect or missing data');
@@ -67,12 +62,41 @@ const toNewHabit = (obj) => {
     }
     throw new Error('Incorrect data: you need name and days');
 };
-exports.toNewHabit = toNewHabit;
+const toNewTask = (obj) => {
+    if (!obj || typeof obj !== 'object') {
+        throw new Error('Incorrect or missing data');
+    }
+    if ('startsAt' in obj && 'endsAt' in obj && 'task' in obj && 'completed' in obj) {
+        if (isDate(parseRealDate(obj.startsAt)) && isDate(parseRealDate(obj.endsAt)) && isString(obj.task) && isBoolean(obj.completed)) {
+            const newTask = {
+                startsAt: parseRealDate(obj.startsAt),
+                endsAt: parseRealDate(obj.endsAt),
+                task: obj.task,
+                completed: obj.completed
+            };
+            return newTask;
+        }
+    }
+    throw new Error('Incorrect timetable obj data');
+};
+const toNewUser = async (obj) => {
+    if (!obj || typeof obj !== 'object') {
+        throw new Error('Incorrect or missing data');
+    }
+    if ('username' in obj && 'password' in obj) {
+        const newUser = {
+            username: parseUsername(obj.username),
+            passwordHash: await parsePassword(obj.password)
+        };
+        return newUser;
+    }
+    throw new Error('Incorrect or missing user data');
+};
 const isString = (text) => {
     return typeof text === 'string' || text instanceof String;
 };
 const isDay = (day) => {
-    return Object.values(types_1.Days).includes(day);
+    return Object.values(Days).includes(day);
 };
 const isDate = (date) => {
     return date instanceof Date && !isNaN(date.getTime());
@@ -80,6 +104,12 @@ const isDate = (date) => {
 const isBoolean = (bool) => {
     return typeof bool === 'boolean';
 };
+// const parseObject = (obj: unknown): object => {
+//     if (!obj || typeof obj !== 'object') {
+//         throw new Error('Incorrect or missing data');
+//     }
+//     return obj;
+// };
 const parseTitle = (title) => {
     if (!isString(title)) {
         throw new Error('Incorrect or missing title:' + title);
@@ -152,15 +182,22 @@ const parseWeight = (weight) => {
     }
     return weight;
 };
+const parseRealDate = (date) => {
+    if (!isString(date)) {
+        throw new Error('Incorrect value for date:' + date);
+    }
+    return new Date(date);
+};
 const parseHabitDay = (day) => {
-    const Day = day;
-    console.log('Is date:', isDate(Day.date), '| Is boolean:', isBoolean(Day.completed));
     if (!day || typeof day !== 'object') {
         throw new Error('Incorrect or missing habit day data');
     }
     if ('date' in day && 'completed' in day) {
         if (isDate(day.date) && isBoolean(day.completed)) {
             return { date: day.date, completed: day.completed };
+        }
+        else if (!isDate(day.date) && isBoolean(day.completed)) {
+            return { date: parseRealDate(day.date), completed: day.completed };
         }
     }
     throw new Error('Incorrect or missing habit day data');
@@ -171,3 +208,17 @@ const parseHabitDays = (days) => {
     }
     return days.map(day => parseHabitDay(day));
 };
+const parseUsername = (username) => {
+    if (!isString(username)) {
+        throw new Error('Incorrect or missing username');
+    }
+    return username;
+};
+const parsePassword = async (pass) => {
+    if (!isString(pass)) {
+        throw new Error('Incorrect or missing password hash');
+    }
+    const saltRounds = 10;
+    return await bcrypt.hash(pass, saltRounds);
+};
+export { toNewWorkout, toNewExercise, toNewWorkoutRecord, toNewHabit, toNewTask, toNewUser };

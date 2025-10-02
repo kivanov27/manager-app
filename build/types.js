@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Days = void 0;
-var Days;
+export var Days;
 (function (Days) {
     Days["Monday"] = "Monday";
     Days["Tuesday"] = "Tuesday";
@@ -10,4 +7,4 @@ var Days;
     Days["Friday"] = "Friday";
     Days["Saturday"] = "Saturday";
     Days["Sunday"] = "Sunday";
-})(Days || (exports.Days = Days = {}));
+})(Days || (Days = {}));

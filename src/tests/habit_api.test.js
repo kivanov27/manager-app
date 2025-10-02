@@ -1,16 +1,17 @@
-import { test, after, beforeEach } from 'node:test';
-import mongoose from 'mongoose';
-import supertest from 'supertest';
-import app from '../app';
-import { Habit } from '../models/habit';
-import assert from 'assert';
+import { test, after, beforeEach } from "node:test";
+import assert from "node:assert";
+import mongoose from "mongoose";
+import supertest from "supertest";
+import app from "../app";
+
+import { Habit } from "../models/habit";
 
 const api = supertest(app);
 
 const initialHabits = [
     {
-        id: '1',
-        name: 'habit1',
+        id: "1",
+        name: "habit1",
         days: [
             {
                 date: new Date(2024, 10, 1),
@@ -50,17 +51,17 @@ const initialHabits = [
 
 beforeEach(async () => {
     await Habit.deleteMany({});
-    let habitObj = new Habit(initialHabits[0]);
+    const habitObj = new Habit(initialHabits[0]);
     await habitObj.save();
     // habitObj = new Habit(initialHabits[1]);
     // await habitObj.save();
 });
 
-test('habits are returned as json', async () => {
+test("habits are returned as json", async () => {
     await api
-        .get('/api/habits')
+        .get("/api/habits")
         .expect(200)
-        .expect('Content-Type', /application\/json/);
+        .expect("Content-Type", /application\/json/);
 });
 
 // test('there are two habits', async () => {
@@ -68,8 +69,8 @@ test('habits are returned as json', async () => {
 //     assert.strictEqual(response.body.length, initialHabits.length);
 // });
 
-test('habit1 exists', async () => {
-    const response = await api.get('/api/habits');
+test("habit1 exists", async () => {
+    const response = await api.get("/api/habits");
     assert.strictEqual(response.body[0].name, initialHabits[0].name);
 });
 

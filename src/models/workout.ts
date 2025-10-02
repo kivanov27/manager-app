@@ -1,6 +1,6 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import { exerciseSchema } from './exercise';
-import { Exercise } from '../types';
+import { exerciseSchema } from './exercise.ts';
+import { Exercise } from '../types.ts';
 
 interface IWorkout extends Document {
     title: string;

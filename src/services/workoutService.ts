@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
-import { Exercise } from '../models/exercise';
-import { Workout } from '../models/workout';
-import { Workout as WorkoutEntry, NewWorkout, NewExercise } from '../types';
+import { Exercise } from '../models/exercise.ts';
+import { Workout } from '../models/workout.ts';
+import { Workout as WorkoutEntry, NewWorkout, NewExercise } from '../types.ts';
 
 const getAllWorkouts = async (): Promise<WorkoutEntry[]> => {
     return await Workout.find({});

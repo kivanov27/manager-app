@@ -1,5 +1,5 @@
-import { Habit as HabitModel } from "../models/habit";
-import { Habit, NewHabit } from "../types";
+import { Habit as HabitModel } from "../models/habit.ts";
+import { Habit, NewHabit } from "../types.ts";
 
 const getAllHabits = async (): Promise<Habit[]> => {
     return await HabitModel.find({});

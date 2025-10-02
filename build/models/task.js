@@ -1,21 +1,19 @@
-import mongoose, { Schema } from 'mongoose';
-const daySchema = new Schema({
-    date: {
+import mongoose, { Schema } from "mongoose";
+const taskSchema = new Schema({
+    startsAt: {
         type: Date,
+        required: true
+    },
+    endsAt: {
+        type: Date,
+        required: true
+    },
+    task: {
+        type: String,
         required: true
     },
     completed: {
         type: Boolean,
-        required: true
-    }
-});
-const habitSchema = new Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    days: {
-        type: [daySchema],
         required: true
     },
     user: {
@@ -23,7 +21,7 @@ const habitSchema = new Schema({
         ref: 'User'
     }
 });
-habitSchema.set('toJSON', {
+taskSchema.set('toJSON', {
     transform: (_document, returnedObject) => {
         if (returnedObject._id) {
             returnedObject.id = returnedObject._id.toString();
@@ -32,4 +30,4 @@ habitSchema.set('toJSON', {
         }
     }
 });
-export const Habit = mongoose.model('Habit', habitSchema);
+export const Task = mongoose.model('Task', taskSchema);
