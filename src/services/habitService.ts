@@ -11,7 +11,7 @@ const getHabit = async (id: string): Promise<Habit> => {
     if (!habit) {
         throw new Error(`Could not find habit with id ${id}.`);
     }
-    return habit.toJSON();
+    return habit;
 };
 
 const createHabit = async (newHabit: NewHabit): Promise<Habit> => {
@@ -24,7 +24,7 @@ const createHabit = async (newHabit: NewHabit): Promise<Habit> => {
     const habit = new HabitModel(newHabit);
     const savedHabit = await habit.save();
     // user.habits = user.habits.concat(savedHabit._id);
-    return savedHabit.toJSON();
+    return savedHabit;
 };
 
 const updateHabit = async (id: string, newHabit: NewHabit): Promise<Habit> => {
@@ -32,7 +32,7 @@ const updateHabit = async (id: string, newHabit: NewHabit): Promise<Habit> => {
     if (!updatedHabit) {
         throw new Error(`Could not find habit with id ${id}`);
     }
-    return updatedHabit.toJSON();
+    return updatedHabit;
 };
 
 const deleteHabit = async (id: string) => {

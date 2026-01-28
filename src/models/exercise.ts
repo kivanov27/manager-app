@@ -21,7 +21,7 @@ export const exerciseSchema = new Schema<IExercise>({
 });
 
 exerciseSchema.set('toJSON', {
-    transform: (_document, returnedObject: Partial<IExercise & { _id: mongoose.Types.ObjectId }>) => {
+    transform: (_document, returnedObject: any) => {
         if (returnedObject._id) {
             returnedObject.id = returnedObject._id.toString();
             delete returnedObject._id;

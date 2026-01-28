@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema<IUser>({
 });
 
 userSchema.set('toJSON', {
-    transform: (_document, returnedObject: Partial<IUser & { _id: mongoose.Types.ObjectId }>) => {
+    transform: (_document, returnedObject: any) => {
         if (returnedObject._id) {
             returnedObject.id = returnedObject._id.toString();
             delete returnedObject._id;
@@ -54,4 +54,3 @@ userSchema.set('toJSON', {
 });
 
 export const User = mongoose.model('User', userSchema);
-
